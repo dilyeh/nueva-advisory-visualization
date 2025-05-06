@@ -22,8 +22,17 @@ function App() { // im not very familiar with what best practices exist for js/r
       <h1>Advisory Visualization</h1>
         <div class="visualization-container">
           this is a visualization visualization visualization visualization visualization visualization visualization visualization visualization 
-          <Visualization visualizationDots={visualizationRef.current}/>
+          <TestComponent number={tick}/>
         </div>
+    </div>
+  );
+}
+
+function TestComponent({ number }) { // ({ ... }) declare "props", which are just arguments into a react component
+  return (
+    <div id="test">
+      <div>this is a test component</div>
+      <div>{ number }</div>
     </div>
   );
 }
