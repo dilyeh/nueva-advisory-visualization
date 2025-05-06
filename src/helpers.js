@@ -1,19 +1,42 @@
 
-export class VisualizationContainer {
+export class VisualizationState {
     constructor() {
         // create the dots
-        let visualizationDots = [];
+        let dotList = [];
         for (let i=0; i<5; i++) {
-            visualizationDots.push(new Dot(new Vector2(i * 10, i * 10)));
+            dotList.push(new Dot(new Vector2(i * 30, i * 30)));
         }
-        this.visualizationDots = visualizationDots;
+        this.dotList = dotList;
     }
 
     updateVisualization() {
-        for (let idx=0; idx<this.visualizationDots.length; idx++) {
-            this.visualizationDots[idx].tick(this.visualizationDots);
+        for (let idx=0; idx<this.dotList.length; idx++) {
+            this.dotList[idx].tick(this.dotList);
         }
+        console.log("we're updating");
     }
+}
+
+
+
+export function Visualization({ tick, visStateRef }) { // this generates a react component
+    let circles = [];
+    for (let idx=0; idx<visStateRef.current.dotList.length; idx++) {
+        circles.push(
+            <circle 
+                r="20"
+                cx={ visStateRef.current.dotList[idx].position.X }
+                cy={ visStateRef.current.dotList[idx].position.Y }
+                fill="yellow"
+             />
+        );
+    }
+
+    return (
+        <svg id="visualization">
+            { circles }
+        </svg>
+    );
 }
 
 
@@ -27,7 +50,7 @@ export class Dot {
 
     tick(visualizationDots) {
         this.getForces(visualizationDots);
-        this.moveDot(new Vector2(2,2));
+        this.moveDot(new Vector2(10,10));
     }
   
     getForces(visualizationDots) { // visualizationDots is a list of Dots
@@ -37,7 +60,7 @@ export class Dot {
         this.forces.Y = distanceFromTargetPosition.Y * 5;
 
         for (const dot of visualizationDots) {
-            if (!dot == this) { // idk if this works?
+            if (!dot === this) { // idk if this works? i think === checks if it's the same without type conversion or smth?????? average js moment
                 let distanceFromDot = new Vector2(dot.position.X - this.position.X, dot.position.Y - this.position.Y);
                 this.forces.X += distanceFromDot.X * 0.5;
                 this.forces.Y += distanceFromDot.Y * 0.5;
@@ -64,11 +87,3 @@ export class Vector2 { // represents a 2d vector.
     }
 }
 
-
-export function Visualization({ tick }) { // this generates a react component
-    return (
-        <svg id="visualization">
-            <circle r="20" cx={ tick*10 } cy="20" fill="yellow" />
-        </svg>
-    );
-}
