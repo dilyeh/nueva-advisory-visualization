@@ -65,19 +65,10 @@ export class Vector2 { // represents a 2d vector.
 }
 
 
-export const Visualization = ({ visualizationContainer }) => { // this generates a react component
-    let htmlToReturn = [];
-    let visualizationDots = visualizationContainer.visualizationDots;
-
-    for (let i=0; i<visualizationDots.length; i++) { // this is so cooked
-        htmlToReturn.push(
-            <circle cx={visualizationDots[i].position.X} cy={visualizationDots[i].position.Y} r="3" strokeWidth="0" fill="yellow" />
-        );
-    }
-
+export function Visualization({ tick }) { // this generates a react component
     return (
         <svg id="visualization">
-            { htmlToReturn }
+            <circle r="20" cx={ tick*10 } cy="20" fill="yellow" />
         </svg>
     );
 }
