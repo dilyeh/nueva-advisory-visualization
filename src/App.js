@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import './App.css';
-import { Visualization, VisualizationState } from './helpers.js';
+import { Visualization, VisualizationState, randInt, Vector2 } from './helpers.js';
 
 
 function App() { // im not very familiar with what best practices exist for js/react, so App() is just gonna be main()
@@ -11,8 +11,18 @@ function App() { // im not very familiar with what best practices exist for js/r
   useEffect(() => { // this was chatgpted because i don't understand react hooks
     const interval = setInterval(() => {
       // put update logic here
+
       visStateRef.current.updateVisualization();
-      setTick(prev => prev + 1); // what is this sorcery???
+      setTick(prev => {
+
+        let updatedTick = prev + 1; // the way js closures work (or something) is that, when outside of the scope of setTick, the state of tick when it was first declared is stored or something, idrk
+        if (updatedTick % 100 == 0) {
+          visStateRef.current.setNewTargetPositions(new Vector2(randInt(500), randInt(500)), new Vector2(randInt(500), randInt(500)));
+        }
+
+
+        return prev + 1;
+      }); // what is this sorcery???
     }, 33);
 
     return () => clearInterval(interval); // Clean up on unmount
