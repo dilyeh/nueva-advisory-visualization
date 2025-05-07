@@ -13,7 +13,7 @@ function App() { // im not very familiar with what best practices exist for js/r
       // put update logic here
       visStateRef.current.updateVisualization();
       setTick(prev => prev + 1); // what is this sorcery???
-    }, 1000);
+    }, 33);
 
     return () => clearInterval(interval); // Clean up on unmount
   }, []);
@@ -34,7 +34,7 @@ function TestComponent({ number }) { // ({ ... }) declare "props", which are jus
   return (
     <div id="test">
       <div>this is a test component</div>
-      <div>{ number }</div>
+      <div>tick: { number }</div>
     </div>
   );
 }
