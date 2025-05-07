@@ -82,8 +82,7 @@ export class Dot {
         this.forces.Y = targetVelocity.Y - this.velocity.Y;
 
         for (const dot of dotList) {
-            // wait, this is bad. force should be proportional to the dot's distance (x and y), not just the x or y components
-            // it'll be easier to compute distance and angle, find the force magnitude, and adjust the x and y components according to magnitude and angle
+            // compute distance and angle, find the force magnitude, and adjust the x and y components according to magnitude and angle
             if (dot !== this) {
                 let distanceFromDot = this.position.getDistance(dot.position);
 
@@ -97,10 +96,6 @@ export class Dot {
                     this.forces.X += Math.cos(angle) * forceMagnitude;
                     this.forces.Y += Math.sin(angle) * forceMagnitude;
                 }
-                
-                // if the abs(distanceFromDot <= 50), then take 50-abs(distanceFromDot), multiply it by the sign, and add it to forces. else, add nothing
-                //this.forces.X += (Math.abs(distanceFromDot.X) <= 10) ? (-0.15 * Math.sign(distanceFromDot.X) * (10 - Math.abs(distanceFromDot.X))) : 0;
-                //this.forces.Y += (Math.abs(distanceFromDot.Y) <= 10) ? (-0.15 * Math.sign(distanceFromDot.Y) * (10 - Math.abs(distanceFromDot.Y))) : 0;
             }
         }
     }
@@ -127,7 +122,7 @@ export class Vector2 { // represents a 2d vector.
         return (Math.sqrt(
             ((this.X - anotherVector2.X) ** 2) + 
             ((this.Y - anotherVector2.Y) ** 2) 
-        ))
+        ));
     }
 }
 

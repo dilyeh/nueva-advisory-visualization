@@ -11,7 +11,6 @@ function App() { // im not very familiar with what best practices exist for js/r
   useEffect(() => { // this was chatgpted because i don't understand react hooks
     const interval = setInterval(() => {
       // put update logic here
-
       visStateRef.current.updateVisualization();
       setTick(prev => {
 
