@@ -28,7 +28,7 @@ export function Visualization({ visStateRef }) { // this generates a react compo
     for (let idx=0; idx<visStateRef.current.dotList.length; idx++) {
         circles.push(
             <circle 
-                r="10"
+                r={ visStateRef.current.dotList[idx].radius }
                 cx={ visStateRef.current.dotList[idx].position.X }
                 cy={ visStateRef.current.dotList[idx].position.Y }
                 fill="yellow"
@@ -51,31 +51,49 @@ export class Dot {
         this.velocity = new Vector2(0,0);
         this.forces = new Vector2(0,0); // forces and accel are basically the same thing. there's no mass implementation here
         this.targetPosition = new Vector2(100,100);
+        this.radius = 10;
     }
 
-    tick(visualizationDots) {
-        this.getForces(visualizationDots);
+    tick(visualizationState) {
+        // find forces
+        this.getForces(visualizationState);
+        // update position
         this.updateVelocity();
         this.moveDot(this.velocity);
+        // check / get out of collisions
+        // render
     }
   
-    getForces(visualizationDots) { // visualizationDots is a list of Dots
+    getForces() { 
         // find forces according to targetPosition
         let distanceFromTargetPosition = new Vector2(this.targetPosition.X - this.position.X, this.targetPosition.Y - this.position.Y);
         let targetVelocity = new Vector2(distanceFromTargetPosition.X * 0.05, distanceFromTargetPosition.Y * 0.05);
         this.forces.X = targetVelocity.X - this.velocity.X;
         this.forces.Y = targetVelocity.Y - this.velocity.Y;
+    }
 
-        for (const dot of visualizationDots) {
-            if (dot !== this) { // idk if this works? i think === checks if it's the same without type conversion or smth?????? average js moment
-                let distanceFromDot = new Vector2(dot.position.X - this.position.X, dot.position.Y - this.position.Y);
+    checkCollisions(visualizationState) {
+        for (let idx=0; idx<visualizationState.current.dotList.length; idx++) {
+            if (visualizationState.current.dotList !== this) {
+                // get distance from dot
+                let distance = this.position.getDistance(visualizationState.current.dotList[idx].position);
+                if (distance < this.radius + visualizationState.current.dotlist[idx].radius) {
+                    return true;
+                }
+           }
+        }
+        return false;
+    }
 
-                // if the abs(distanceFromDot <= 50), then take 50-abs(distanceFromDot), multiply it by the sign, and add it to forces. else, add nothing
-                this.forces.X += (Math.abs(distanceFromDot.X) <= 10) ? (-0.15 * Math.sign(distanceFromDot.X) * (20 - Math.abs(distanceFromDot.X))) : 0;
-                this.forces.Y += (Math.abs(distanceFromDot.Y) <= 10) ? (-0.15 * Math.sign(distanceFromDot.Y) * (20 - Math.abs(distanceFromDot.Y))) : 0;
+    getOutOfCollisions(visualizationState) {
+        for (let jiggle=0; jiggle<this.radius; jiggle++) {
+            if (!this.checkCollisions(visualizationState)) {
+                
             }
         }
+
     }
+
     updateVelocity() {
         this.velocity.X += this.forces.X;
         this.velocity.Y += this.forces.Y;
@@ -93,6 +111,13 @@ export class Vector2 { // represents a 2d vector.
     constructor(X, Y) {
         this.X = X;
         this.Y = Y;
+    }
+
+    getDistance(anotherVector2) {
+        return (Math.sqrt(
+            ((this.X - anotherVector2.X) ** 2) + 
+            ((this.X - anotherVector2.X) ** 2)
+        ));
     }
 }
 
