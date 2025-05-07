@@ -3,7 +3,7 @@ export class VisualizationState {
     constructor() {
         // create the dots
         let dotList = [];
-        for (let i=0; i<10; i++) {
+        for (let i=0; i<20; i++) {
             dotList.push(
                 new Dot(
                     new Vector2(randInt(300), randInt(300))
@@ -14,9 +14,22 @@ export class VisualizationState {
     }
 
     updateVisualization() {
-        console.log("updating visualization");
         for (let idx=0; idx<this.dotList.length; idx++) {
             this.dotList[idx].tick(this.dotList);
+        }
+    }
+
+    setNewTargetPositions(newTargetPosition1, newTargetPosition2) { // newTargetLocation is a vector2
+        for (let idx=0; idx<this.dotList.length; idx++) {
+            let randomBool = randInt(2);
+            if (randomBool == 0) {
+                this.dotList[idx].targetPosition = newTargetPosition1;
+                this.dotList[idx].color = "#fce879";
+            }
+            else {
+                this.dotList[idx].targetPosition = newTargetPosition2;
+                this.dotList[idx].color = "#d781f9";
+            }
         }
     }
 }
@@ -31,7 +44,7 @@ export function Visualization({ visStateRef }) { // this generates a react compo
                 r={ visStateRef.current.dotList[idx].radius }
                 cx={ visStateRef.current.dotList[idx].position.X }
                 cy={ visStateRef.current.dotList[idx].position.Y }
-                fill="yellow"
+                fill={ visStateRef.current.dotList[idx].color }
              />
         );
     }
@@ -52,43 +65,37 @@ export class Dot {
         this.forces = new Vector2(0,0); // forces and accel are basically the same thing. there's no mass implementation here
         this.targetPosition = new Vector2(100,100);
         this.radius = 10;
+        this.color = "#fce879";
     }
 
-    tick(visualizationState) {
-        // find forces
-        this.getForces(visualizationState);
-        // update position
+    tick(dotList) {
+        this.getForces(dotList);
         this.updateVelocity();
         this.moveDot(this.velocity);
-        // check / get out of collisions
-        // render
     }
   
-    getForces() { 
+    getForces(dotList) { // dotList is, contrary to popular belief, a list of dots
         // find forces according to targetPosition
         let distanceFromTargetPosition = new Vector2(this.targetPosition.X - this.position.X, this.targetPosition.Y - this.position.Y);
-        let targetVelocity = new Vector2(distanceFromTargetPosition.X * 0.05, distanceFromTargetPosition.Y * 0.05);
+        let targetVelocity = new Vector2(distanceFromTargetPosition.X * 0.03, distanceFromTargetPosition.Y * 0.03);
         this.forces.X = targetVelocity.X - this.velocity.X;
         this.forces.Y = targetVelocity.Y - this.velocity.Y;
-    }
 
-    checkCollisions(visualizationState) {
-        for (let idx=0; idx<visualizationState.current.dotList.length; idx++) {
-            if (visualizationState.current.dotList !== this) {
-                // get distance from dot
-                let distance = this.position.getDistance(visualizationState.current.dotList[idx].position);
-                if (distance < this.radius + visualizationState.current.dotlist[idx].radius) {
-                    return true;
+        for (const dot of dotList) {
+            // compute distance and angle, find the force magnitude, and adjust the x and y components according to magnitude and angle
+            if (dot !== this) {
+                let distanceFromDot = this.position.getDistance(dot.position);
+
+                if (distanceFromDot <= (this.radius + dot.radius)) {
+                    let angle = Math.atan((dot.position.Y - this.position.Y) / (dot.position.X - this.position.X)); // atan's range is (-pi/2) -> (pi/2)
+                    if (this.position.X > dot.position.X) { // i think this gives us a full 360 degrees
+                        angle += Math.PI;
+                    }
+
+                    let forceMagnitude = -0.85 * ((this.radius + dot.radius) - distanceFromDot);
+                    this.forces.X += Math.cos(angle) * forceMagnitude;
+                    this.forces.Y += Math.sin(angle) * forceMagnitude;
                 }
-           }
-        }
-        return false;
-    }
-
-    getOutOfCollisions(visualizationState) {
-        for (let jiggle=0; jiggle<this.radius; jiggle++) {
-            if (!this.checkCollisions(visualizationState)) {
-                
             }
         }
 
@@ -116,11 +123,11 @@ export class Vector2 { // represents a 2d vector.
     getDistance(anotherVector2) {
         return (Math.sqrt(
             ((this.X - anotherVector2.X) ** 2) + 
-            ((this.X - anotherVector2.X) ** 2)
+            ((this.Y - anotherVector2.Y) ** 2) 
         ));
     }
 }
 
-function randInt(max) {
+export function randInt(max) {
     return Math.floor(Math.random() * max);
 }
