@@ -16,13 +16,13 @@ function App() { // im not very familiar with what best practices exist for js/r
 
         let updatedTick = prev + 1; // the way js closures work (or something) is that, when outside of the scope of setTick, the state of tick when it was first declared is stored or something, idrk
         if (updatedTick % 1000 === 0) {
-          visStateRef.current.setNewTargetPositions(new Vector2(randInt(500), randInt(500)), new Vector2(randInt(500), randInt(500)));
+          visStateRef.current.setNewTargetPositions(new Vector2(250, 50), new Vector2(250, 500));
         }
 
 
         return prev + 1;
       }); // what is this sorcery???
-    }, 15);
+    }, 10);
 
     return () => clearInterval(interval); // Clean up on unmount
   }, []);

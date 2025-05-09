@@ -3,7 +3,7 @@ export class VisualizationState {
     constructor() {
         // create the dots
         let dotList = [];
-        for (let i=0; i<50; i++) {
+        for (let i=0; i<200; i++) {
             dotList.push(
                 new Dot(
                     new Vector2(randInt(300), randInt(300))
@@ -67,40 +67,55 @@ export class Dot {
         this.targetPosition = new Vector2(100,100);
         this.radius = 5;
         this.color = "#fce879";
+        this.previousPosition = this.position;
+        this.locked = false;
     }
 
     updateTick(dotList) {
+        this.locked = false;
         this.getForces(dotList);
     }
 
-    moveTick() {
+    moveTick(dotList) {
         this.updateVelocity();
         this.moveDot(this.velocity);
+        this.getOutOfCollisions(dotList);
+        this.locked = true;
     }
   
     getForces(dotList) { // dotList is, contrary to popular belief, a list of dots
-        const springStiffness = 0.03;
+        const attraction = 0.02;
         const dampening = 0.8;
+        const selfForceField = 1.1;
+        const othersForceField = 2;
+        const otherDotSpringForce = -0.3;
+
         // find forces according to targetPosition
         let distanceFromTargetPosition = new Vector2(this.targetPosition.X - this.position.X, this.targetPosition.Y - this.position.Y);
         let targetVelocity = new Vector2(
-            (Math.abs(distanceFromTargetPosition.X) * springStiffness) * Math.sign(distanceFromTargetPosition.X), 
-            (Math.abs(distanceFromTargetPosition.Y) * springStiffness) * Math.sign(distanceFromTargetPosition.Y));
+            (Math.abs(distanceFromTargetPosition.X) * attraction) * Math.sign(distanceFromTargetPosition.X), 
+            (Math.abs(distanceFromTargetPosition.Y) * attraction) * Math.sign(distanceFromTargetPosition.Y));
         this.forces.X = (targetVelocity.X - this.velocity.X);
         this.forces.Y = (targetVelocity.Y - this.velocity.Y);
 
         for (const dot of dotList) {
-
-
             // compute distance and angle, find the force magnitude, and adjust the x and y components according to magnitude and angle
             if (dot !== this) {
                 let distanceFromDot = this.position.getDistance(dot.position);
+                //let forceFieldToUse = (dot.targetPosition === this.targetPosition) ? selfForceField : othersForceField;
+                let forceFieldToUse = 0;
+                if (dot.targetPosition.X == this.targetPosition.X && dot.targetPosition.Y == this.targetPosition.Y) {
+                    forceFieldToUse = selfForceField;
+                }
+                else {
+                    forceFieldToUse = othersForceField;
+                }
 
-                if (distanceFromDot <= (this.radius + dot.radius)) {
+                if (distanceFromDot <= (this.radius + dot.radius) * forceFieldToUse) {
                     let angle = Math.atan2(dot.position.Y - this.position.Y, dot.position.X - this.position.X); // atan's range is (-pi/2) -> (pi/2)
 
                     //let forceMagnitude = -0.8 * 1.5 ** ((this.radius + dot.radius) - distanceFromDot);
-                    let forceMagnitude = -0.8 * ((this.radius + dot.radius)- distanceFromDot);
+                    let forceMagnitude = otherDotSpringForce * ((this.radius + dot.radius) * forceFieldToUse - distanceFromDot);
                     this.forces.X += Math.cos(angle) * forceMagnitude;
                     this.forces.Y += Math.sin(angle) * forceMagnitude;
                 }
@@ -110,19 +125,18 @@ export class Dot {
     }
 
     updateVelocity() {
+        const dampening = 0.8;
+        const maxAcceleration = 0.5;
+
+        if (this.forces.magnitude() > maxAcceleration) {
+            this.forces.X = Math.cos(this.forces.angle()) * maxAcceleration;
+            this.forces.Y = Math.sin(this.forces.angle()) * maxAcceleration;
+        }
         this.velocity.X += this.forces.X;
         this.velocity.Y += this.forces.Y;
 
-        const dampening = 0.8;
         this.velocity.X *= dampening;
         this.velocity.Y *= dampening;
-
-        //if (Math.abs(this.velocity.X) <= 0.1) {
-            //this.velocity.X = 0;
-        //}
-        //if (Math.abs(this.velocity.Y) <= 0.1) {
-            //this.velocity.Y = 0;
-        //}
     }
 
     moveDot(velocity) {
@@ -130,6 +144,61 @@ export class Dot {
         this.position.Y += velocity.Y;
     }
 
+
+    getOutOfCollisions(dotList) { 
+        let previousPositionMoved = this.position;
+        for (const dot of dotList) {
+            let distance = dot.position.getDistance(this.position);
+            if (this !== dot) {
+                if (distance < this.radius + dot.radius) {
+                    // get angle
+                    let angle = Math.atan2(dot.position.Y - this.position.Y, dot.position.X - this.position.X);
+                    // get amount to displace
+                    let displacementMagnitude = 0 - ((this.radius + dot.radius) - distance); // negative because propelling away
+                    // get components
+                    let displacement = new Vector2(Math.cos(angle) * displacementMagnitude, Math.sin(angle) * displacementMagnitude)
+                    this.position.X += displacement.X;
+                    this.position.Y += displacement.Y;
+                }
+            }
+        }
+
+        let isColliding = this.checkCollisions(dotList);
+        if (isColliding) {
+            this.previousPositionMoved = this.position;
+            for (const dot of dotList) {
+                let distance = dot.position.getDistance(this.position);
+                // only look at the locked dots
+                if (this !== dot && dot.locked) {
+                    if (distance < this.radius + dot.radius) {
+                        // get angle
+                        let angle = Math.atan2(dot.position.Y - this.position.Y, dot.position.X - this.position.X);
+                        // get amount to displace
+                        let displacementMagnitude = 0 - ((this.radius + dot.radius) - distance); // negative because propelling away
+                        // get components
+                        let displacement = new Vector2(Math.cos(angle) * displacementMagnitude, Math.sin(angle) * displacementMagnitude)
+                        this.position.X += displacement.X;
+                        this.position.Y += displacement.Y;
+                    }
+                }
+            }
+        }
+        isColliding = this.checkCollisions(dotList);
+        if (isColliding) {
+            this.position = this.previousPosition;
+        }
+        this.previousPosition = this.position;
+    }
+
+    checkCollisions(dotList) {
+        for (const dot of dotList) {
+            let distance = dot.position.getDistance(this.position)
+            if (distance < this.radius + dot.radius) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
 
 
@@ -144,6 +213,12 @@ export class Vector2 { // represents a 2d vector.
             ((this.X - anotherVector2.X) ** 2) + 
             ((this.Y - anotherVector2.Y) ** 2) 
         ));
+    }
+    magnitude() {
+        return Math.sqrt(this.X ** 2 + this.Y ** 2);
+    }
+    angle() {
+        return Math.atan2(this.Y, this.X);
     }
 }
 
