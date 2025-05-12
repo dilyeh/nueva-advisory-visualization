@@ -13,18 +13,44 @@ code {
     monospace;
 }
 
-.visualization-container {
+#visualization-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr; /* 4 equally sized columns */
+  grid-template-rows: 1fr 5fr; /* 2 rows. the bottom one is 5x as tall as the top one*/
   margin: auto;
-  width: 500px;
-  height: 800px;
+  width: 800px;
+  height: 700px;
+  background-color:rgb(168, 168, 255);
 }
 
+#visualization-label-container {
+  display: flex;
+  flex-flow: column nowrap;
+  background-color:rgb(254, 223, 138);
+}
+
+
 #visualization {
-  background-color:deepskyblue;
+  background-color:rgb(134, 225, 255);
+  grid-column: 2 / span 3;
   width: 100%;
   height: 100%;
 }
 
-#test {
-  background-color: #f4e3be;
+.label {
+  margin-top: 50px;
+  margin-bottom: 50px;
+  padding: 0px;
+}
+
+#menu {
+  grid-column: 1 / span 4;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+  background-color: #ff9494;
+}
+
+.control {
+  margin: auto;
 }

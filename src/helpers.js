@@ -1,15 +1,20 @@
 
 export class VisualizationState {
-    constructor() {
+    constructor(data) {
+        this.colorRule = "None";
+        this.targetPositionRule = "None";
         // create the dots
         let dotList = [];
-        for (let i=0; i<200; i++) {
+        for (const entry of data) {
             dotList.push(
                 new Dot(
-                    new Vector2(randInt(300), randInt(300))
+                    new Vector2(randInt(600), randInt(700)), // init position
+                    new Vector2(300, 350), // init target position
+                    entry // data
                 )
-            );
+            )
         }
+        //console.log("ndots: " + ndots);
         this.dotList = dotList;
     }
 
@@ -19,33 +24,27 @@ export class VisualizationState {
             this.dotList[idx].moveTick(this.dotList);
         }
     }
-
-    setNewTargetPositions(newTargetPosition1, newTargetPosition2) { // newTargetLocation is a vector2
+    
+    setNewState(newColorRule, newTargetPositionRule) { // "Grade", "Value", or "Frequency"
         for (let idx=0; idx<this.dotList.length; idx++) {
-            let randomBool = randInt(2);
-            if (randomBool === 0) {
-                this.dotList[idx].targetPosition = newTargetPosition1;
-                this.dotList[idx].color = "#fce879";
-            }
-            else {
-                this.dotList[idx].targetPosition = newTargetPosition2;
-                this.dotList[idx].color = "#d781f9";
-            }
+            this.colorRule = newColorRule;
+            this.targetPositionRule= newTargetPositionRule;
+            this.dotList[idx].updateColor(newColorRule);
+            this.dotList[idx].updateTargetPosition(newTargetPositionRule);
         }
     }
 }
 
-
-
 export function Visualization({ visStateRef }) { // this generates a react component
     let circles = [];
-    for (let idx=0; idx<visStateRef.current.dotList.length; idx++) {
+    let dotList = visStateRef.current.dotList;
+    for (let idx=0; idx<dotList.length; idx++) {
         circles.push(
             <circle 
-                r={ visStateRef.current.dotList[idx].radius }
-                cx={ visStateRef.current.dotList[idx].position.X }
-                cy={ visStateRef.current.dotList[idx].position.Y }
-                fill={ visStateRef.current.dotList[idx].color }
+                r={ dotList[idx].radius }
+                cx={ dotList[idx].position.X }
+                cy={ dotList[idx].position.Y }
+                fill= { dotList[idx].possibleColors[dotList[idx].colorIdx] }
              />
         );
     }
@@ -57,16 +56,16 @@ export function Visualization({ visStateRef }) { // this generates a react compo
     );
 }
 
-
-
 export class Dot {
-    constructor(Position) { // position is a vector2
+    constructor(Position, TargetPosition, Data) { // position is a vector2
+        this.data = Data; // data looks like {"Grade": "xx", "Advisory": "xx", "Value": "xx", "Activities": [...], "Frequency": "xx"}
         this.position = Position;
         this.velocity = new Vector2(0,0);
         this.forces = new Vector2(0,0); // forces and accel are basically the same thing. there's no mass implementation here
-        this.targetPosition = new Vector2(100,100);
+        this.targetPosition = TargetPosition;
         this.radius = 5;
-        this.color = "#fce879";
+        this.colorIdx = 0;
+        this.possibleColors = ["#22577a", "#38a3a5", "#57cc99", "#80ed99", "#c7f9cc"];
         this.previousPosition = this.position;
         this.locked = false;
     }
@@ -75,6 +74,67 @@ export class Dot {
         this.locked = false;
         this.getForces(dotList);
     }
+
+    updateColor(visStateColor) {
+        switch (visStateColor) { // this is terrible, it's a bunch of nested switch statements
+            case "Grade":
+                let grade = Number(this.data["Grade"]);
+                this.colorIdx = grade - 9;
+                break;
+            case "Value":
+                let value = Number(this.data["Value"]);
+                this.colorIdx = value - 1;
+                break;
+
+            case "Frequency":
+                let mappingThing = ["3+ times a week", "Twice a week", "Once a week", "Once every other week", "Once a month"];
+                this.colorIdx = 1; // default to as it is now (twice a week) if other (because idk how to clean that up easily) TODO: actually do something about this
+                for (let idx=0; idx<mappingThing.length; idx++) {
+                    if (this.data["Frequency"] == mappingThing[idx]) {
+                        this.colorIdx = idx;
+                        break;
+                    }
+                }
+                break;
+            case "None":
+                this.colorIdx = 0;
+                break;
+            default:
+                break;
+        }
+    }
+
+    updateTargetPosition(visStatePosition) {
+        let notFound = false;
+        let yPositions = [500, 400, 300, 200, 100]
+        switch (visStatePosition) {
+            case "Grade":
+                let grade = Number(this.data["Grade"]);
+                this.targetPosition = new Vector2(300, yPositions[grade - 9]); // 300 is the center width. the 3- is to reverse it because there's 4 grades and a zero index. we wanna reverse it because y=0 is at the top
+                break;
+            case "Value":
+                let value = Number(this.data["Value"]);
+                this.targetPosition = new Vector2(300, yPositions[value - 1]);
+                break;
+            case "Frequency":
+                let mappingThing = ["Once a month", "Once every other week", "Once a week", "Twice a week", "3+ times a week"];
+                this.targetPosition = new Vector2(300, yPositions[3]); // default to as it is now (twice a week) if other (because idk how to clean that up easily) TODO: actually do something about this
+                for (let idx=0; idx<mappingThing.length; idx++) {
+                    if (this.data["Frequency"] == mappingThing[idx]) {
+                        this.targetPosition = new Vector2(300, yPositions[idx]);
+                        break;
+                    }
+                }
+                break;
+            case "None":
+                this.targetPosition = new Vector2 (300, 350);
+                notFound = true; // TODO: this is very cursed, but i don't wanna multiply
+                break;
+            default:
+                break;
+        }
+    }
+
 
     moveTick(dotList) {
         this.updateVelocity();
@@ -201,7 +261,6 @@ export class Dot {
     }
 }
 
-
 export class Vector2 { // represents a 2d vector.
     constructor(X, Y) {
         this.X = X;
@@ -224,4 +283,32 @@ export class Vector2 { // represents a 2d vector.
 
 export function randInt(max) {
     return Math.floor(Math.random() * max);
+}
+
+export function VisualizationLabels({ visStateRef }) {
+    let targetPositionRule = visStateRef.current.targetPositionRule;
+    let labels = [];
+    switch (targetPositionRule) {
+        case "Grade":
+            labels = ["12th", "11th", "10th", "9th"];
+            break;
+        case "Value":
+            labels = ["5", "4", "3", "2", "1"];
+            break;
+        case "Frequency":
+            labels = ["3+ times a week", "2 times a week", "Once a week", "Once every other week", "Once a month"];
+            break;
+    }
+    let htmlToReturn = [];
+    for (const label of labels) {
+        htmlToReturn.push(
+            <div class="label">{ label }</div>
+        );
+    }
+
+    return(
+        <div id="visualization-label-container">
+            { htmlToReturn }
+        </div>
+    );
 }

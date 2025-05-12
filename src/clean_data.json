@@ -1,0 +1,884 @@
+[
+    {
+        "Grade": "10",
+        "Advisory": "Alex & Emily",
+        "Value": "1",
+        "Activities": [
+            "one on ones",
+            "announcements",
+            "work periods"
+        ],
+        "Frequency": "never"
+    },
+    {
+        "Grade": "10",
+        "Advisory": "Barak & Regina",
+        "Value": "2",
+        "Activities": [
+            "announcements",
+            "games",
+            "work periods",
+            "off-campus trips"
+        ],
+        "Frequency": "Once a month"
+    },
+    {
+        "Grade": "10",
+        "Advisory": "Preethi & Jehnna",
+        "Value": "2",
+        "Activities": [
+            "advisory discussions",
+            "announcements",
+            "work periods"
+        ],
+        "Frequency": "Once a month"
+    },
+    {
+        "Grade": "10",
+        "Advisory": "Braelyn & Karin",
+        "Value": "2",
+        "Activities": [
+            "advisory discussions",
+            "announcements",
+            "work periods"
+        ],
+        "Frequency": "Once every other week"
+    },
+    {
+        "Grade": "10",
+        "Advisory": "Jeremy & Jana",
+        "Value": "2",
+        "Activities": [
+            "advisory discussions",
+            "announcements",
+            "work periods"
+        ],
+        "Frequency": "Once a week"
+    },
+    {
+        "Grade": "10",
+        "Advisory": "Jeremy & Jana",
+        "Value": "3",
+        "Activities": [
+            "advisory discussions",
+            "announcements",
+            "games",
+            "work periods",
+            "cross-advisory activities"
+        ],
+        "Frequency": "Twice a week"
+    },
+    {
+        "Grade": "10",
+        "Advisory": "Ihmar & Francine",
+        "Value": "3",
+        "Activities": [
+            "games",
+            "work periods"
+        ],
+        "Frequency": "Once a week"
+    },
+    {
+        "Grade": "10",
+        "Advisory": "Jeremy & Jana",
+        "Value": "3",
+        "Activities": [
+            "announcements",
+            "games",
+            "work periods"
+        ],
+        "Frequency": "Twice a week"
+    },
+    {
+        "Grade": "10",
+        "Advisory": "Katie G. & Brett",
+        "Value": "4",
+        "Activities": [
+            "one on ones",
+            "advisory discussions",
+            "announcements",
+            "games",
+            "work periods",
+            "cross-advisory activities",
+            "off-campus trips"
+        ],
+        "Frequency": "Twice a week"
+    },
+    {
+        "Grade": "10",
+        "Advisory": "Lindy & Shawn",
+        "Value": "4",
+        "Activities": [
+            "advisory discussions",
+            "announcements",
+            "games"
+        ],
+        "Frequency": "Twice a week"
+    },
+    {
+        "Grade": "10",
+        "Advisory": "Jeremy & Jana",
+        "Value": "5",
+        "Activities": [
+            "one on ones",
+            "advisory discussions",
+            "announcements",
+            "games",
+            "work periods"
+        ],
+        "Frequency": "Twice a week"
+    },
+    {
+        "Grade": "10",
+        "Advisory": "Jeremy & Jana",
+        "Value": "5",
+        "Activities": [
+            "advisory discussions",
+            "announcements",
+            "work periods",
+            "cross-advisory activities"
+        ],
+        "Frequency": "Once a week"
+    },
+    {
+        "Grade": "10",
+        "Advisory": "Lindy & Shawn",
+        "Value": "1",
+        "Activities": [
+            "advisory discussions",
+            "announcements",
+            "games",
+            "work periods"
+        ],
+        "Frequency": "Once a month"
+    },
+    {
+        "Grade": "10",
+        "Advisory": "Lindy & Shawn",
+        "Value": "3",
+        "Activities": [
+            "advisory discussions",
+            "announcements",
+            "games",
+            "work periods"
+        ],
+        "Frequency": "Once a week"
+    },
+    {
+        "Grade": "10",
+        "Advisory": "",
+        "Value": "2",
+        "Activities": [
+            "announcements"
+        ],
+        "Frequency": "Lowk never I feel like its kind of useless"
+    },
+    {
+        "Grade": "11",
+        "Advisory": "Dan & Amber",
+        "Value": "1",
+        "Activities": [
+            "one on ones",
+            "advisory discussions",
+            "announcements",
+            "work periods"
+        ],
+        "Frequency": "Once a month"
+    },
+    {
+        "Grade": "11",
+        "Advisory": "Yoko & Robert",
+        "Value": "2",
+        "Activities": [
+            "advisory discussions",
+            "announcements"
+        ],
+        "Frequency": "Once every other week"
+    },
+    {
+        "Grade": "11",
+        "Advisory": "Dan & Amber",
+        "Value": "4",
+        "Activities": [
+            "advisory discussions",
+            "announcements",
+            "games",
+            "work periods"
+        ],
+        "Frequency": "Once a week"
+    },
+    {
+        "Grade": "11",
+        "Advisory": "Nick & Erika",
+        "Value": "2",
+        "Activities": [
+            "announcements",
+            "work periods"
+        ],
+        "Frequency": "Once a week"
+    },
+    {
+        "Grade": "11",
+        "Advisory": "Yoko & Robert",
+        "Value": "3",
+        "Activities": [
+            "one on ones",
+            "advisory discussions",
+            "announcements"
+        ],
+        "Frequency": "Twice a week"
+    },
+    {
+        "Grade": "11",
+        "Advisory": "Francisco & Sejin",
+        "Value": "3",
+        "Activities": [
+            "one on ones",
+            "advisory discussions",
+            "announcements"
+        ],
+        "Frequency": "Twice a week"
+    },
+    {
+        "Grade": "11",
+        "Advisory": "Ted & Lyla",
+        "Value": "1",
+        "Activities": [
+            "games"
+        ],
+        "Frequency": "Once a week"
+    },
+    {
+        "Grade": "12",
+        "Advisory": "Tom & Mae",
+        "Value": "1",
+        "Activities": [
+            "announcements",
+            "games"
+        ],
+        "Frequency": "Once every other week"
+    },
+    {
+        "Grade": "12",
+        "Advisory": "Jay & Diana",
+        "Value": "1",
+        "Activities": [
+            "none"
+        ],
+        "Frequency": "never"
+    },
+    {
+        "Grade": "12",
+        "Advisory": "Rob & Nas",
+        "Value": "2",
+        "Activities": [
+            "advisory discussions",
+            "games"
+        ],
+        "Frequency": "Once every other week"
+    },
+    {
+        "Grade": "12",
+        "Advisory": "Sarah & Leonard",
+        "Value": "2",
+        "Activities": [
+            "advisory discussions",
+            "announcements",
+            "work periods"
+        ],
+        "Frequency": "Once a week"
+    },
+    {
+        "Grade": "12",
+        "Advisory": "Chris & Holly",
+        "Value": "3",
+        "Activities": [
+            "advisory discussions",
+            "announcements",
+            "games"
+        ],
+        "Frequency": "Twice a week"
+    },
+    {
+        "Grade": "9",
+        "Advisory": "Lee H. & Katie K.",
+        "Value": "1",
+        "Activities": [
+            "advisory discussions"
+        ],
+        "Frequency": "Once every other week"
+    },
+    {
+        "Grade": "9",
+        "Advisory": "Lee H. & Katie K.",
+        "Value": "1",
+        "Activities": [
+            "announcements"
+        ],
+        "Frequency": "Once a week"
+    },
+    {
+        "Grade": "9",
+        "Advisory": "Jen & Phil",
+        "Value": "1",
+        "Activities": [
+            "one on ones",
+            "advisory discussions",
+            "announcements",
+            "games",
+            "work periods",
+            "off-campus trips"
+        ],
+        "Frequency": "Once a month"
+    },
+    {
+        "Grade": "9",
+        "Advisory": "Paloma & Terry",
+        "Value": "2",
+        "Activities": [
+            "advisory discussions",
+            "games"
+        ],
+        "Frequency": "Once every other week"
+    },
+    {
+        "Grade": "9",
+        "Advisory": "Wes & Liza",
+        "Value": "2",
+        "Activities": [
+            "advisory discussions",
+            "announcements",
+            "work periods"
+        ],
+        "Frequency": "Once a week"
+    },
+    {
+        "Grade": "9",
+        "Advisory": "Mara & Gavin",
+        "Value": "2",
+        "Activities": [
+            "advisory discussions",
+            "announcements"
+        ],
+        "Frequency": "3+ times a week"
+    },
+    {
+        "Grade": "9",
+        "Advisory": "Paloma & Terry",
+        "Value": "2",
+        "Activities": [
+            "advisory discussions",
+            "off-campus trips"
+        ],
+        "Frequency": "Once every other week"
+    },
+    {
+        "Grade": "9",
+        "Advisory": "Wes & Liza",
+        "Value": "3",
+        "Activities": [
+            "advisory discussions",
+            "announcements",
+            "games"
+        ],
+        "Frequency": "Once a week"
+    },
+    {
+        "Grade": "9",
+        "Advisory": "Mara & Gavin",
+        "Value": "3",
+        "Activities": [
+            "announcements",
+            "work periods"
+        ],
+        "Frequency": "Once a week"
+    },
+    {
+        "Grade": "9",
+        "Advisory": "Paloma & Terry",
+        "Value": "3",
+        "Activities": [
+            "one on ones",
+            "advisory discussions",
+            "announcements",
+            "games",
+            "work periods",
+            "off-campus trips"
+        ],
+        "Frequency": "Twice a week"
+    },
+    {
+        "Grade": "9",
+        "Advisory": "Liam & Melanie",
+        "Value": "3",
+        "Activities": [
+            "advisory discussions",
+            "announcements"
+        ],
+        "Frequency": "Twice a week"
+    },
+    {
+        "Grade": "9",
+        "Advisory": "Sushu & Sydni",
+        "Value": "3",
+        "Activities": [
+            "advisory discussions",
+            "announcements",
+            "games",
+            "work periods",
+            "off-campus trips"
+        ],
+        "Frequency": "Twice a week"
+    },
+    {
+        "Grade": "9",
+        "Advisory": "Mara & Gavin",
+        "Value": "3",
+        "Activities": [
+            "advisory discussions",
+            "announcements",
+            "work periods"
+        ],
+        "Frequency": "Twice a week"
+    },
+    {
+        "Grade": "9",
+        "Advisory": "Jen & Phil",
+        "Value": "3",
+        "Activities": [
+            "advisory discussions",
+            "announcements",
+            "games"
+        ],
+        "Frequency": "Once a week"
+    },
+    {
+        "Grade": "9",
+        "Advisory": "Lee H. & Katie K.",
+        "Value": "3",
+        "Activities": [
+            "advisory discussions",
+            "announcements"
+        ],
+        "Frequency": "3+ times a week"
+    },
+    {
+        "Grade": "9",
+        "Advisory": "Pearl & Simon",
+        "Value": "3",
+        "Activities": [
+            "one on ones",
+            "advisory discussions",
+            "announcements",
+            "games",
+            "off-campus trips"
+        ],
+        "Frequency": "Twice a week"
+    },
+    {
+        "Grade": "9",
+        "Advisory": "Liam & Melanie",
+        "Value": "3",
+        "Activities": [
+            "advisory discussions",
+            "announcements",
+            "games"
+        ],
+        "Frequency": "Once a week"
+    },
+    {
+        "Grade": "9",
+        "Advisory": "Patrick",
+        "Value": "4",
+        "Activities": [
+            "one on ones",
+            "advisory discussions",
+            "games"
+        ],
+        "Frequency": "Twice a week"
+    },
+    {
+        "Grade": "9",
+        "Advisory": "Lee H. & Katie K.",
+        "Value": "4",
+        "Activities": [
+            "one on ones",
+            "advisory discussions",
+            "announcements",
+            "off-campus trips"
+        ],
+        "Frequency": "Twice a week"
+    },
+    {
+        "Grade": "9",
+        "Advisory": "Patrick",
+        "Value": "4",
+        "Activities": [
+            "advisory discussions",
+            "announcements",
+            "games",
+            "work periods",
+            "cross-advisory activities"
+        ],
+        "Frequency": "Twice a week"
+    },
+    {
+        "Grade": "9",
+        "Advisory": "Patrick",
+        "Value": "5",
+        "Activities": [
+            "one on ones",
+            "advisory discussions",
+            "announcements",
+            "games",
+            "work periods"
+        ],
+        "Frequency": "Twice a week"
+    },
+    {
+        "Grade": "9",
+        "Advisory": "Sushu & Sydni",
+        "Value": "5",
+        "Activities": [
+            "one on ones",
+            "advisory discussions",
+            "announcements",
+            "games",
+            "work periods",
+            "off-campus trips"
+        ],
+        "Frequency": "Twice a week"
+    },
+    {
+        "Grade": "9",
+        "Advisory": "Patrick",
+        "Value": "5",
+        "Activities": [
+            "advisory discussions",
+            "announcements",
+            "games"
+        ],
+        "Frequency": "Twice a week"
+    },
+    {
+        "Grade": "9",
+        "Advisory": "Patrick",
+        "Value": "5",
+        "Activities": [
+            "advisory discussions",
+            "announcements",
+            "games"
+        ],
+        "Frequency": "Twice a week"
+    },
+    {
+        "Grade": "9",
+        "Advisory": "Liam & Melanie",
+        "Value": "5",
+        "Activities": [
+            "one on ones",
+            "advisory discussions",
+            "announcements",
+            "games",
+            "cross-advisory activities"
+        ],
+        "Frequency": "Twice a week"
+    },
+    {
+        "Grade": "9",
+        "Advisory": "Andrew & Brianna",
+        "Value": "3",
+        "Activities": [
+            "advisory discussions",
+            "announcements"
+        ],
+        "Frequency": "Once a week"
+    },
+    {
+        "Grade": "9",
+        "Advisory": "Liam & Melanie",
+        "Value": "5",
+        "Activities": [
+            "advisory discussions",
+            "announcements",
+            "off-campus trips"
+        ],
+        "Frequency": "3+ times a week"
+    },
+    {
+        "Grade": "9",
+        "Advisory": "",
+        "Value": "2",
+        "Activities": [
+            "advisory discussions",
+            "announcements",
+            "games"
+        ],
+        "Frequency": "Twice a week"
+    },
+    {
+        "Grade": "9",
+        "Advisory": "Pearl & Simon",
+        "Value": "2",
+        "Activities": [
+            "one on ones",
+            "advisory discussions",
+            "announcements",
+            "games",
+            "off-campus trips"
+        ],
+        "Frequency": "Once a week"
+    },
+    {
+        "Grade": "9",
+        "Advisory": "Sushu & Sydni",
+        "Value": "3",
+        "Activities": [
+            "off-campus trips"
+        ],
+        "Frequency": "Twice a week"
+    },
+    {
+        "Grade": "9",
+        "Advisory": "",
+        "Value": "3",
+        "Activities": [
+            "one on ones",
+            "announcements",
+            "games",
+            "off-campus trips"
+        ],
+        "Frequency": "Once a week"
+    },
+    {
+        "Grade": "9",
+        "Advisory": "Lee H. & Katie K.",
+        "Value": "2",
+        "Activities": [
+            "one on ones",
+            "advisory discussions",
+            "announcements",
+            "off-campus trips"
+        ],
+        "Frequency": "Twice a week"
+    },
+    {
+        "Grade": "9",
+        "Advisory": "Lee H. & Katie K.",
+        "Value": "1",
+        "Activities": [
+            "advisory discussions"
+        ],
+        "Frequency": "Once every other week"
+    },
+    {
+        "Grade": "9",
+        "Advisory": "Mara & Gavin",
+        "Value": "2",
+        "Activities": [
+            "advisory discussions",
+            "announcements",
+            "games",
+            "work periods",
+            "off-campus trips"
+        ],
+        "Frequency": "Once every other week"
+    },
+    {
+        "Grade": "11",
+        "Advisory": "Barry & Taryn",
+        "Value": "4",
+        "Activities": [
+            "one on ones",
+            "advisory discussions",
+            "announcements",
+            "games",
+            "work periods",
+            "cross-advisory activities",
+            "off-campus trips"
+        ],
+        "Frequency": "Once a week"
+    },
+    {
+        "Grade": "9",
+        "Advisory": "Pearl & Simon",
+        "Value": "3",
+        "Activities": [
+            "one on ones",
+            "advisory discussions",
+            "announcements",
+            "games",
+            "off-campus trips"
+        ],
+        "Frequency": "Twice a week"
+    },
+    {
+        "Grade": "11",
+        "Advisory": "Francisco & Sejin",
+        "Value": "1",
+        "Activities": [
+            "advisory discussions",
+            "announcements"
+        ],
+        "Frequency": "As it currently is, once a month. If it was fun/useful, the current time would be fine, or maybe once a week"
+    },
+    {
+        "Grade": "11",
+        "Advisory": "Ting & Les",
+        "Value": "3",
+        "Activities": [
+            "advisory discussions",
+            "announcements",
+            "work periods",
+            "cross-advisory activities"
+        ],
+        "Frequency": "Twice a week"
+    },
+    {
+        "Grade": "9",
+        "Advisory": "Andrew & Brianna",
+        "Value": "3",
+        "Activities": [
+            "advisory discussions",
+            "announcements",
+            "games",
+            "cross-advisory activities"
+        ],
+        "Frequency": "Once a week"
+    },
+    {
+        "Grade": "11",
+        "Advisory": "Claire & John",
+        "Value": "1",
+        "Activities": [
+            "announcements",
+            "work periods"
+        ],
+        "Frequency": "Once every other week"
+    },
+    {
+        "Grade": "10",
+        "Advisory": "Jen N. & Kevin",
+        "Value": "3",
+        "Activities": [
+            "one on ones",
+            "advisory discussions",
+            "announcements",
+            "work periods"
+        ],
+        "Frequency": "Once a week"
+    },
+    {
+        "Grade": "10",
+        "Advisory": "Alex & Emily",
+        "Value": "2",
+        "Activities": [
+            "one on ones",
+            "announcements",
+            "work periods"
+        ],
+        "Frequency": "Once every other week"
+    },
+    {
+        "Grade": "11",
+        "Advisory": "Francisco & Sejin",
+        "Value": "5",
+        "Activities": [
+            "one on ones",
+            "advisory discussions",
+            "announcements",
+            "games",
+            "work periods"
+        ],
+        "Frequency": "Once a week"
+    },
+    {
+        "Grade": "9",
+        "Advisory": "Sushu & Sydni",
+        "Value": "4",
+        "Activities": [
+            "advisory discussions",
+            "announcements",
+            "games",
+            "off-campus trips"
+        ],
+        "Frequency": "Twice a week"
+    },
+    {
+        "Grade": "11",
+        "Advisory": "Dan & Amber",
+        "Value": "4",
+        "Activities": [
+            "one on ones",
+            "announcements",
+            "work periods"
+        ],
+        "Frequency": "Twice a week"
+    },
+    {
+        "Grade": "9",
+        "Advisory": "Sushu & Sydni",
+        "Value": "3",
+        "Activities": [
+            "advisory discussions",
+            "announcements",
+            "games",
+            "work periods",
+            "off-campus trips"
+        ],
+        "Frequency": "3+ times a week"
+    },
+    {
+        "Grade": "10",
+        "Advisory": "",
+        "Value": "2",
+        "Activities": [
+            "announcements",
+            "work periods"
+        ],
+        "Frequency": "Once a month"
+    },
+    {
+        "Grade": "9",
+        "Advisory": "Patrick",
+        "Value": "4",
+        "Activities": [
+            "one on ones",
+            "advisory discussions",
+            "announcements",
+            "games"
+        ],
+        "Frequency": "Twice a week"
+    },
+    {
+        "Grade": "9",
+        "Advisory": "Wes & Liza",
+        "Value": "3",
+        "Activities": [
+            "announcements"
+        ],
+        "Frequency": "Once a week"
+    },
+    {
+        "Grade": "9",
+        "Advisory": "Lee H. & Katie K.",
+        "Value": "3",
+        "Activities": [
+            "one on ones",
+            "advisory discussions",
+            "announcements",
+            "work periods",
+            "off-campus trips"
+        ],
+        "Frequency": "3+ times a week"
+    },
+    {
+        "Grade": "11",
+        "Advisory": "",
+        "Value": "1",
+        "Activities": [
+            "none"
+        ],
+        "Frequency": "Never"
+    }
+]
