@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/nueva-advisory-visualization/static/css/main.22e839a5.css",
+    "main.js": "/nueva-advisory-visualization/static/js/main.1629b138.js",
+    "static/js/453.565bbd6b.chunk.js": "/nueva-advisory-visualization/static/js/453.565bbd6b.chunk.js",
+    "index.html": "/nueva-advisory-visualization/index.html",
+    "main.22e839a5.css.map": "/nueva-advisory-visualization/static/css/main.22e839a5.css.map",
+    "main.1629b138.js.map": "/nueva-advisory-visualization/static/js/main.1629b138.js.map",
+    "453.565bbd6b.chunk.js.map": "/nueva-advisory-visualization/static/js/453.565bbd6b.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.22e839a5.css",
+    "static/js/main.1629b138.js"
+  ]
+}
