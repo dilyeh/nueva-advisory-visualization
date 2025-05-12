@@ -8,14 +8,15 @@ export class VisualizationState {
         for (const entry of data) {
             dotList.push(
                 new Dot(
-                    new Vector2(randInt(600), randInt(700)), // init position
-                    new Vector2(300, 350), // init target position
+                    new Vector2(randInt(250), randInt(550)), // init position
+                    new Vector2(250/2, 550/2), // init target position. this is very cursed
                     entry // data
                 )
             )
         }
-        //console.log("ndots: " + ndots);
         this.dotList = dotList;
+        //                    least                                        most
+        this.colorPalette = ["#22577a", "#38a3a5", "#57cc99", "#80ed99", "#c7f9cc"];
     }
 
     updateVisualization() {
@@ -44,7 +45,7 @@ export function Visualization({ visStateRef }) { // this generates a react compo
                 r={ dotList[idx].radius }
                 cx={ dotList[idx].position.X }
                 cy={ dotList[idx].position.Y }
-                fill= { dotList[idx].possibleColors[dotList[idx].colorIdx] }
+                fill= { visStateRef.current.colorPalette[dotList[idx].colorIdx] }
              />
         );
     }
@@ -65,7 +66,6 @@ export class Dot {
         this.targetPosition = TargetPosition;
         this.radius = 5;
         this.colorIdx = 0;
-        this.possibleColors = ["#22577a", "#38a3a5", "#57cc99", "#80ed99", "#c7f9cc"];
         this.previousPosition = this.position;
         this.locked = false;
     }
@@ -106,28 +106,29 @@ export class Dot {
 
     updateTargetPosition(visStatePosition) {
         let notFound = false;
-        let yPositions = [500, 400, 300, 200, 100]
+        let yPositions = [450, 350, 250, 150, 50]
+        const centerPosition = 250 / 2;
         switch (visStatePosition) {
             case "Grade":
                 let grade = Number(this.data["Grade"]);
-                this.targetPosition = new Vector2(300, yPositions[grade - 9]); // 300 is the center width. the 3- is to reverse it because there's 4 grades and a zero index. we wanna reverse it because y=0 is at the top
+                this.targetPosition = new Vector2(centerPosition, yPositions[grade - 8]); 
                 break;
             case "Value":
                 let value = Number(this.data["Value"]);
-                this.targetPosition = new Vector2(300, yPositions[value - 1]);
+                this.targetPosition = new Vector2(centerPosition, yPositions[value - 1]);
                 break;
             case "Frequency":
                 let mappingThing = ["Once a month", "Once every other week", "Once a week", "Twice a week", "3+ times a week"];
-                this.targetPosition = new Vector2(300, yPositions[3]); // default to as it is now (twice a week) if other (because idk how to clean that up easily) TODO: actually do something about this
+                this.targetPosition = new Vector2(centerPosition, yPositions[3]); // default to as it is now (twice a week) if other (because idk how to clean that up easily) TODO: actually do something about this
                 for (let idx=0; idx<mappingThing.length; idx++) {
                     if (this.data["Frequency"] == mappingThing[idx]) {
-                        this.targetPosition = new Vector2(300, yPositions[idx]);
+                        this.targetPosition = new Vector2(centerPosition, yPositions[idx]);
                         break;
                     }
                 }
                 break;
             case "None":
-                this.targetPosition = new Vector2 (300, 350);
+                this.targetPosition = new Vector2 (centerPosition, 350);
                 notFound = true; // TODO: this is very cursed, but i don't wanna multiply
                 break;
             default:
@@ -309,6 +310,23 @@ export function VisualizationLabels({ visStateRef }) {
     return(
         <div id="visualization-label-container">
             { htmlToReturn }
+        </div>
+    );
+}
+
+export function ColorKey({ visStateRef }) {
+
+    return (
+        <div id="color-key">
+            <div class=""></div>
+            <svg>
+                <circle></circle>
+            </svg>
+            <div></div>
+            <svg>
+                <circle></circle>
+            </svg>
+
         </div>
     );
 }
