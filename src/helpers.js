@@ -58,8 +58,28 @@ export function Visualization({ visStateRef }) { // this generates a react compo
         );
     }
 
+    let targetPositionRule = visStateRef.current.targetPositionRule;
+    let lines = [];
+    if (targetPositionRule != "None") {
+        let possibleTargetPositions = visStateRef.current.possibleTargetPositions;
+        let orderMap = visStateRef.current.orderMap[targetPositionRule];
+        for (let idx=0; idx<orderMap.length; idx++) {
+            lines.push(
+                <line 
+                    x1="0"
+                    y1={ possibleTargetPositions[idx] } 
+                    x2="500"
+                    y2={ possibleTargetPositions[idx] } 
+                    stroke="#e0e0e0"
+                    stroke-width="2"
+                />
+            )
+        }
+    }
+
     return (
         <svg id="visualization">
+            { lines }
             { circles }
         </svg>
     );
@@ -296,18 +316,69 @@ export function VisualizationLabels({ visStateRef }) {
 }
 
 export function ColorKey({ visStateRef }) {
-    let colorPalette = visStateRef.current.colorPalette;
-    let test = <div></div>
-    //<div>
-        //<div class="key"></div>
-        //<div class="colorValue"></div>
-    //</div>
+    let colorRule = visStateRef.current.colorRule;
+    if (colorRule == "None") { // none case
+        return (<div id="color-key"></div>)
+    }
 
-    
+    let orderMap = visStateRef.current.orderMap[colorRule];
+    let colorPalette = visStateRef.current.colorPalette;
+    let htmlToReturn = [];
+    for (let idx=0; idx<orderMap.length; idx++) {
+        htmlToReturn.push(
+            <div class="color-key-item">
+                <svg class="color-key-dot">
+                    <circle cx="5" cy="5" r="5" fill={ colorPalette[idx] }/>
+                </svg>
+                <div>{ orderMap[idx] }</div>
+            </div>
+        )
+    }
 
     return (
         <div id="color-key">
-            { test }
+            { htmlToReturn }
         </div>
-    );
+    )
+}
+
+export function Descriptions({ visStateRef }){
+    let colorRule = visStateRef.current.colorRule;
+    let targetPositionRule = visStateRef.current.targetPositionRule;
+    let colorDescription = getDescription(colorRule);
+    let targetPositionDescription = getDescription(targetPositionRule);
+    
+    return (
+        <div id="description-container">
+            <div class="description">
+                <strong>Color: </strong> { colorDescription }
+            </div>
+            <div class="description">
+                <strong>Position: </strong> {targetPositionDescription}
+            </div>
+        </div>
+    )
+}
+
+function getDescription(state) {
+    switch (state) {
+        case "Grade":
+            return (
+                "The grades of students we surveyed."
+            );
+        case "Value":
+            return (
+                "Students' percieved value of advisory. 1 = Useless, 5 = Very Valuable."
+            );
+        case "Frequency":
+            return (
+                "How often students we surveyed wished advisory met."
+            );
+        case "None":
+            return(
+                "None"
+            );
+        default:
+            return ("");
+    }
 }

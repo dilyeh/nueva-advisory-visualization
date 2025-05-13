@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import './App.css';
-import { Visualization, VisualizationState, Vector2, VisualizationLabels } from './helpers.js';
+import { Visualization, VisualizationState, Vector2, VisualizationLabels, ColorKey, Descriptions } from './helpers.js';
 import data from './clean_data.json'; // automatically parsed
 
 
@@ -30,13 +30,17 @@ function App() { // im not very familiar with what best practices exist for js/r
   }, []);
 
   return (
-    <div className="App">
-      <h1>Advisory Visualization</h1>
-        <div id="visualization-container">
-          <Control tick={tick} visStateRef={visStateRef}/>
-          <VisualizationLabels visStateRef={visStateRef} />
-          <Visualization tick={tick} visStateRef={visStateRef}/>
-        </div>
+    <div id="content">
+      <div className="App">
+        <h1 id="title">Student Opinion on Advisory</h1>
+          <div id="visualization-container">
+            <Control tick={tick} visStateRef={visStateRef} />
+            <ColorKey visStateRef={visStateRef} />
+            <Descriptions visStateRef={visStateRef} />
+            <VisualizationLabels visStateRef={visStateRef} />
+            <Visualization tick={tick} visStateRef={visStateRef}/>
+          </div>
+      </div>
     </div>
   );
 }
@@ -56,7 +60,7 @@ function Control({ tick, visStateRef }) { // ({ ... }) declare "props", which ar
       <div class="control">
         <div>Color</div>
         <select onChange={ handleColorChange }>
-          <option value="None">Choose an option!</option>
+          <option value="None">None</option>
           <option value="Grade">Grade</option>
           <option value="Value">Value</option>
           <option value="Frequency">Frequency</option>
@@ -65,7 +69,7 @@ function Control({ tick, visStateRef }) { // ({ ... }) declare "props", which ar
       <div class="control">
         <div>Position</div>
         <select onChange={ handlePositionChange }>
-          <option value="None">Choose an option!</option>
+          <option value="None">None</option>
           <option value="Grade">Grade</option>
           <option value="Value">Value</option>
           <option value="Frequency">Frequency</option>
