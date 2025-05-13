@@ -3,20 +3,28 @@ export class VisualizationState {
     constructor(data) {
         this.colorRule = "None";
         this.targetPositionRule = "None";
+        this.centerPosition = 250 / 2;
+
+        //                    least                                        most
+        this.colorPalette = ["#22577a", "#38a3a5", "#57cc99", "#80ed99", "#c7f9cc"];
+        this.possibleTargetPositions = [50, 150, 250, 350, 450];
+        this.orderMap = {
+            "Frequency": ["3+ times a week", "Twice a week", "Once a week", "Once every other week", "Once a month"],
+            "Grade": ["12", "11", "10", "9"],
+            "Value": ["5", "4", "3", "2", "1"]
+        }
         // create the dots
         let dotList = [];
         for (const entry of data) {
             dotList.push(
                 new Dot(
                     new Vector2(randInt(250), randInt(550)), // init position
-                    new Vector2(250/2, 550/2), // init target position. this is very cursed
+                    new Vector2(this.centerPosition, 550/2), // init target position. this is very cursed
                     entry // data
                 )
             )
         }
         this.dotList = dotList;
-        //                    least                                        most
-        this.colorPalette = ["#22577a", "#38a3a5", "#57cc99", "#80ed99", "#c7f9cc"];
     }
 
     updateVisualization() {
@@ -30,8 +38,8 @@ export class VisualizationState {
         for (let idx=0; idx<this.dotList.length; idx++) {
             this.colorRule = newColorRule;
             this.targetPositionRule= newTargetPositionRule;
-            this.dotList[idx].updateColor(newColorRule);
-            this.dotList[idx].updateTargetPosition(newTargetPositionRule);
+            this.dotList[idx].updateColor(this);
+            this.dotList[idx].updateTargetPosition(this);
         }
     }
 }
@@ -75,67 +83,40 @@ export class Dot {
         this.getForces(dotList);
     }
 
-    updateColor(visStateColor) {
-        switch (visStateColor) { // this is terrible, it's a bunch of nested switch statements
-            case "Grade":
-                let grade = Number(this.data["Grade"]);
-                this.colorIdx = grade - 9;
-                break;
-            case "Value":
-                let value = Number(this.data["Value"]);
-                this.colorIdx = value - 1;
-                break;
-
-            case "Frequency":
-                let mappingThing = ["3+ times a week", "Twice a week", "Once a week", "Once every other week", "Once a month"];
-                this.colorIdx = 1; // default to as it is now (twice a week) if other (because idk how to clean that up easily) TODO: actually do something about this
-                for (let idx=0; idx<mappingThing.length; idx++) {
-                    if (this.data["Frequency"] == mappingThing[idx]) {
-                        this.colorIdx = idx;
-                        break;
-                    }
-                }
-                break;
-            case "None":
-                this.colorIdx = 0;
-                break;
-            default:
-                break;
+    updateColor(visStateRef) {
+        // find the idx of the state in the color map
+        let colorRule = visStateRef.colorRule;
+        if (visStateRef.colorRule == "None") {
+            this.colorIdx = 0;
+            return
+        }
+        let orderMap = visStateRef.orderMap[colorRule];
+        this.colorIdx = 1; // TODO: so far, the only thing that could have a default value is frequency, so it works to be 2, but ideally we have something that keeps track of default values
+        for (let idx=0; idx<orderMap.length; idx++) {
+            if (this.data[colorRule] == orderMap[idx]) { // if when you go into the data and look at the value of the color rule, and it's the same as the orderMap at that idx, you've found your idx
+                // i'll be the first to admit that this logic is a little disguisting
+                this.colorIdx = idx;
+            }
         }
     }
 
-    updateTargetPosition(visStatePosition) {
-        let notFound = false;
-        let yPositions = [450, 350, 250, 150, 50]
-        const centerPosition = 250 / 2;
-        switch (visStatePosition) {
-            case "Grade":
-                let grade = Number(this.data["Grade"]);
-                this.targetPosition = new Vector2(centerPosition, yPositions[grade - 8]); 
-                break;
-            case "Value":
-                let value = Number(this.data["Value"]);
-                this.targetPosition = new Vector2(centerPosition, yPositions[value - 1]);
-                break;
-            case "Frequency":
-                let mappingThing = ["Once a month", "Once every other week", "Once a week", "Twice a week", "3+ times a week"];
-                this.targetPosition = new Vector2(centerPosition, yPositions[3]); // default to as it is now (twice a week) if other (because idk how to clean that up easily) TODO: actually do something about this
-                for (let idx=0; idx<mappingThing.length; idx++) {
-                    if (this.data["Frequency"] == mappingThing[idx]) {
-                        this.targetPosition = new Vector2(centerPosition, yPositions[idx]);
-                        break;
-                    }
-                }
-                break;
-            case "None":
-                this.targetPosition = new Vector2 (centerPosition, 350);
-                notFound = true; // TODO: this is very cursed, but i don't wanna multiply
-                break;
-            default:
-                break;
+    updateTargetPosition(visStateRef) {
+        // this is VERY similar to updateColor, but i'm not sure the best way to make this one method lol
+        let targetPositionRule = visStateRef.targetPositionRule;
+        if (targetPositionRule == "None") { // None case
+            this.targetPosition = new Vector2(visStateRef.centerPosition, 550/2);
+            console.log("this is firing");
+            return;
+        }
+        let orderMap = visStateRef.orderMap[targetPositionRule];
+        this.targetPosition = new Vector2(visStateRef.centerPosition, visStateRef.possibleTargetPositions[1]); // default value. TODO: because the only thing with a default value is frequency, this is ok, but not ideal
+        for (let idx=0; idx<orderMap.length; idx++) {
+            if (this.data[targetPositionRule] == orderMap[idx]) {
+                // that idx is the color and/or position
+                this.targetPosition = new Vector2(visStateRef.centerPosition, visStateRef.possibleTargetPositions[idx]);
+            }
         }
     }
-
 
     moveTick(dotList) {
         this.updateVelocity();
@@ -315,18 +296,18 @@ export function VisualizationLabels({ visStateRef }) {
 }
 
 export function ColorKey({ visStateRef }) {
+    let colorPalette = visStateRef.current.colorPalette;
+    let test = <div></div>
+    //<div>
+        //<div class="key"></div>
+        //<div class="colorValue"></div>
+    //</div>
+
+    
 
     return (
         <div id="color-key">
-            <div class=""></div>
-            <svg>
-                <circle></circle>
-            </svg>
-            <div></div>
-            <svg>
-                <circle></circle>
-            </svg>
-
+            { test }
         </div>
     );
 }
