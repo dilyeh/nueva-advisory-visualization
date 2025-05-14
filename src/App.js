@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import './App.css';
-import { Visualization, VisualizationState, VisualizationLabels, ColorKey, Descriptions } from './helpers.js';
+import { Visualization, VisualizationState, VisualizationLabels, ColorKey, Descriptions, Control } from './helpers.js';
 import data from './clean_data.json'; // automatically parsed
 
 
@@ -38,41 +38,8 @@ function App() { // im not very familiar with what best practices exist for js/r
             <ColorKey visStateRef={visStateRef} />
             <Descriptions visStateRef={visStateRef} />
             <VisualizationLabels visStateRef={visStateRef} />
-            <Visualization tick={tick} visStateRef={visStateRef}/>
+            <Visualization visStateRef={visStateRef}/>
           </div>
-      </div>
-    </div>
-  );
-}
-
-function Control({ tick, visStateRef }) { // ({ ... }) declare "props", which are just arguments into a react component
-  const handleColorChange = (event) => {
-    visStateRef.current.setNewState(event.target.value, visStateRef.current.targetPositionRule);
-  };
-  const handlePositionChange = (event) => {
-    visStateRef.current.targetPositionRule = event.target.value;
-    visStateRef.current.setNewState(visStateRef.current.colorRule, event.target.value);
-  };
-
-  return (
-    <div id="menu">
-      <div className="control">
-        <div>Color</div>
-        <select onChange={ handleColorChange }>
-          <option value="None">None</option>
-          <option value="Grade">Grade</option>
-          <option value="Value">Value</option>
-          <option value="Frequency">Frequency</option>
-        </select>
-      </div>
-      <div className="control">
-        <div>Position</div>
-        <select onChange={ handlePositionChange }>
-          <option value="None">None</option>
-          <option value="Grade">Grade</option>
-          <option value="Value">Value</option>
-          <option value="Frequency">Frequency</option>
-        </select>
       </div>
     </div>
   );
