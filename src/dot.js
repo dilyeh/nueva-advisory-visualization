@@ -1,7 +1,8 @@
-import { Vector2 } from "./niceLilTools"
+import { Vector2, cloneWithPrototype } from "./niceLilTools"
 
 export class Dot {
-    constructor(Position, Data) { // position is a vector2
+    constructor(Id, Position, Data) { // position is a vector2
+        this.id = Id;
         this.data = Data; // data looks like {"Grade": "xx", "Advisory": "xx", "Value": "xx", "Activities": [...], "Frequency": "xx"}
         this.position = Position;
         this.velocity = new Vector2(0,0);
@@ -16,6 +17,13 @@ export class Dot {
     updateTick(dotList) {
         this.locked = false;
         this.getForces(dotList);
+    }
+
+    moveTick(dotList) {
+        this.updateVelocity();
+        this.moveDot(this.velocity);
+        this.getOutOfCollisions(dotList);
+        this.locked = true;
     }
 
     updateColor(visStateRef) {
@@ -38,26 +46,28 @@ export class Dot {
     updateTargetPosition(visStateRef) {
         // this is VERY similar to updateColor, but i'm not sure the best way to make this one method lol
         let targetPositionRule = visStateRef.targetPositionRule;
-        if (targetPositionRule == "None") { // None case
-            this.targetPosition = new Vector2(visStateRef.centerPosition, 550/2);
-            console.log("this is firing");
+        if (targetPositionRule === "None") { // None case
+            this.targetPosition = visStateRef.centerPosition;
             return;
         }
+        let dataToCompare;
+        if (targetPositionRule === "Activities") {
+            dataToCompare = this.data["Activities"][this.data["ActivityNum"]]; // holy crap this is unreadable. i didn't realize my data structure decisions were that bad
+            // basically, go into the activities array and index into the activity number stored elsewhere in the data object
+            // TODO: this is a little unsafe because it assumes the dot has an activitynum, which it's not guaranteed, but it should only fire after it's gotten one?
+        }
+        else {
+            dataToCompare = this.data[targetPositionRule];
+        }
+        
+
         let orderMap = visStateRef.orderMap[targetPositionRule];
-        this.targetPosition = new Vector2(visStateRef.centerPosition, visStateRef.possibleTargetPositions[1]); // default value. TODO: because the only thing with a default value is frequency, this is ok, but not ideal
+        this.targetPosition = new Vector2(visStateRef.centerPosition.X, visStateRef.possibleTargetPositions[1]); // default value. TODO: because the only thing with a default value is frequency, this is ok, but not ideal
         for (let idx=0; idx<orderMap.length; idx++) {
-            if (this.data[targetPositionRule] == orderMap[idx]) {
-                // that idx is the color and/or position
-                this.targetPosition = new Vector2(visStateRef.centerPosition, visStateRef.possibleTargetPositions[idx]);
+            if (dataToCompare == orderMap[idx]) {
+                this.targetPosition = new Vector2(visStateRef.centerPosition.X, visStateRef.possibleTargetPositions[idx]);
             }
         }
-    }
-
-    moveTick(dotList) {
-        this.updateVelocity();
-        this.moveDot(this.velocity);
-        this.getOutOfCollisions(dotList);
-        this.locked = true;
     }
   
     getForces(dotList) { // dotList is, contrary to popular belief, a list of dots
@@ -172,5 +182,28 @@ export class Dot {
             }
         }
         return false;
+    }
+
+    repelFrom(position) {
+        let distance = this.position.getDistance(position);
+        const range = 100;
+        const power = 0.15;
+        if (distance < range) {
+            let angle = Math.atan2(position.Y - this.position.Y, position.X - this.position.X); // i copy+pasted this from the getforces code lol
+            this.velocity.X -= Math.cos(angle) * (range - distance) * power;
+            this.velocity.Y -= Math.sin(angle) * (range - distance) * power;
+        }
+    }
+
+    clone() {
+        const clone = cloneWithPrototype(this);
+        clone.position = this.position.copy();
+        clone.velocity = this.velocity.copy();
+        clone.forces = this.forces.copy();
+        clone.targetPosition = this.targetPosition.copy();
+        clone.previousPosition = this.previousPosition.copy();
+
+        clone.data = JSON.parse(JSON.stringify(this.data));
+        return (clone);
     }
 }

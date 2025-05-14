@@ -1,5 +1,6 @@
 import { Dot } from "./dot.js";
 import { Vector2, randInt, extractColors } from "./niceLilTools.js";
+import React, { useRef } from 'react';
 // i know it's bad to have a "helpers.js" file, but this is where all the components are stored, and i'm too lazy to rename it (but not too lazy to write this comment lol)
 
 // ==============================
@@ -7,9 +8,10 @@ import { Vector2, randInt, extractColors } from "./niceLilTools.js";
 // ==============================
 export class VisualizationState {
     constructor(data) {
+        this.data = data;
         this.colorRule = "None";
         this.targetPositionRule = "None";
-        this.centerPosition = 250 / 2;
+        this.centerPosition = new Vector2(250/2, 550/2);
 
         //                    least                                        most
         //let.url = "https://coolors.co/palette/22577a-38a3a5-57cc99-80ed99-c7f9cc"; // cool, minty, kinda like a foggy forest at dusk
@@ -18,21 +20,24 @@ export class VisualizationState {
         //let url = "https://coolors.co/palette/ef476f-ffd166-06d6a0-118ab2-073b4c"; // oversaturated rainbow
         //let url = "https://coolors.co/palette/386641-6a994e-a7c957-f2e8cf-bc4749"; // the hungry hungry caterpillar (i just think this one's funny)
         let url = "https://coolors.co/palette/3d348b-7678ed-f7b801-f18701-f35b04" // literally a sunset over the ocean
-        this.colorPalette = extractColors(url);
+        this.colorPalette = extractColors(url, true);
         this.defaultColor = "#bababa";
-        this.possibleTargetPositions = [50, 150, 250, 350, 450];
+        this.possibleTargetPositions = [50, 150, 250, 350, 450, 550, 650, 750];
         this.orderMap = {
             "Frequency": ["3+ times a week", "Twice a week", "Once a week", "Once every other week", "Once a month"],
             "Grade": ["12", "11", "10", "9"],
-            "Value": ["5", "4", "3", "2", "1"]
+            "Value": ["5", "4", "3", "2", "1"],
+            "Activities": ["one on ones", "advisory discussions", "announcements", "games", "work periods", "cross-advisory activities", "off-campus trips", "none"]
         }
         // create the dots
         this.dotList = [];
-        for (const entry of data) {
+        //for (const entry of data) {
+        for (let idx=0; idx<data.length; idx++) {
             this.dotList.push(
                 new Dot(
+                    idx, // id
                     new Vector2(randInt(250), randInt(550)), // init position
-                    entry // data
+                    data[idx] // data
                 )
             )
         }
@@ -41,21 +46,87 @@ export class VisualizationState {
     }
 
     updateVisualization() {
+        // sort dots by y axis
+        //                                least             greatest
+        this.dotList.sort((dot1, dot2) => dot1.position.Y - dot2.position.Y); // this was chatgpted, i don't really know how it works
         for (let idx=0; idx<this.dotList.length; idx++) {
+            let dotSubList = this.dotList.slice(idx - 20, idx + 20);
             this.dotList[idx].updateTick(this.dotList);
             this.dotList[idx].moveTick(this.dotList);
         }
     }
     
     setNewState(newColorRule, newTargetPositionRule) { // "Grade", "Value", or "Frequency"
+        // handle activities case
+        if (newTargetPositionRule === "Activities" && this.targetPositionRule !== "Activities") {
+            this.mitosisizeDots();
+        }
+        else if (newTargetPositionRule !== "Activities" && this.targetPositionRule === "Activities") {
+            // apoptosisize the dots
+            this.apoptosisizeDots();
+        }
+
+        this.colorRule = newColorRule;
+        this.targetPositionRule= newTargetPositionRule;
         for (let idx=0; idx<this.dotList.length; idx++) {
-            this.colorRule = newColorRule;
-            this.targetPositionRule= newTargetPositionRule;
             this.dotList[idx].updateColor(this);
             this.dotList[idx].updateTargetPosition(this);
         }
     }
 
+    mitosisizeDots() {
+        let newDotList = [];
+        for (const dot of this.dotList) {
+            // create new dots based on each dot's activity. copy all of its state and all
+            for (let idx=0; idx<dot.data["Activities"].length; idx++) {
+                let newDot = dot.clone();
+                // add an activity number to the dots
+                // so the dot should have the id number and the activity number
+                newDot.data["ActivityNum"] = idx;
+                newDotList.push(newDot);
+            }
+        }
+        this.dotList = newDotList;
+    }
+
+    apoptosisizeDots() {
+        let newDotList = [];
+        let dotAttendance = [];
+        for (let idx=0; idx<this.data.length; idx++) {
+            dotAttendance.push(false); // dotAttendance is a list of all the dots that have(n't) been accounted for
+        }
+        for (const dot of this.dotList) {
+            if (dot.data["ActivityNum"] == 0) {
+                // clone the dot
+                let newDot = dot.clone();
+                // get rid of the activity num
+                delete newDot.data["ActivityNum"];
+                newDotList.push(newDot);
+                dotAttendance[newDot.id] = true;
+            }
+        }
+        // check for dots that aren't represented
+        for (let idx=0; idx<dotAttendance.length; idx++) {
+            if (!dotAttendance[idx]) {
+                newDotList.push( // this was 
+                    new Dot(
+                        idx,
+                        new Vector2(randInt(250), randInt(550)),
+                        this.data[idx]
+                    )
+                )
+            }
+        }
+
+        this.dotList = newDotList;
+    }
+
+
+    explodeDots(clickPosition) {
+        for (const dot of this.dotList) {
+            dot.repelFrom(clickPosition);
+        }
+    }
 }
 
 export function Visualization({ visStateRef }) { // this generates a react component
@@ -91,6 +162,7 @@ export function Visualization({ visStateRef }) { // this generates a react compo
         }
     }
 
+
     return (
         <svg id="visualization">
             { lines }
@@ -106,8 +178,7 @@ export function Control({ visStateRef }) { // ({ ... }) declare "props", which a
   const handleColorChange = (event) => {
     visStateRef.current.setNewState(event.target.value, visStateRef.current.targetPositionRule);
   };
-  const handlePositionChange = (event) => {
-    visStateRef.current.targetPositionRule = event.target.value;
+  const handlePositionChange = (event) => { // it's a bit cursed to be handling this here, but that's just kinda what we're doing because i can't think of a better option off the top of my head
     visStateRef.current.setNewState(visStateRef.current.colorRule, event.target.value);
   };
 
@@ -129,6 +200,7 @@ export function Control({ visStateRef }) { // ({ ... }) declare "props", which a
           <option value="Grade">Grade</option>
           <option value="Value">Value</option>
           <option value="Frequency">Frequency</option>
+          <option value="Activities">Activities</option>
         </select>
       </div>
     </div>
@@ -150,6 +222,9 @@ export function VisualizationLabels({ visStateRef }) {
             break;
         case "Frequency":
             labels = ["3+ times a week", "2 times a week", "Once a week", "Once every other week", "Once a month"];
+            break;
+        case "Activities":
+            labels = ["one on ones", "advisory discussions", "announcements", "games", "work periods", "cross-advisory activities", "off-campus trips", "none"];
             break;
         default:
             break;
@@ -235,3 +310,21 @@ function getDescription(state) { // this is where all the descriptions are store
             return ("");
     }
 }
+
+export function ClickBox({ visStateRef }) {
+    const boxRef = useRef(null);
+    const handleClick = (event) => {
+        const rect = boxRef.current.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+        console.log("X: " + x + "    Y: " + y);
+        visStateRef.current.explodeDots(new Vector2(x, y));
+    }
+    return (
+        <div 
+            id="click-box"
+            ref={boxRef} 
+            onMouseDown={ handleClick }
+        ></div>)
+}
+

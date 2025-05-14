@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import './App.css';
-import { Visualization, VisualizationState, VisualizationLabels, ColorKey, Descriptions, Control } from './helpers.js';
+import { Visualization, VisualizationState, VisualizationLabels, ColorKey, Descriptions, Control, ClickBox } from './helpers.js';
 import data from './clean_data.json'; // automatically parsed
 
 
@@ -39,6 +39,7 @@ function App() { // im not very familiar with what best practices exist for js/r
             <Descriptions visStateRef={visStateRef} />
             <VisualizationLabels visStateRef={visStateRef} />
             <Visualization visStateRef={visStateRef}/>
+            <ClickBox visStateRef={visStateRef}/>
           </div>
       </div>
     </div>

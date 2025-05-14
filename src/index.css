@@ -28,10 +28,10 @@ code {
 #visualization-container {
   display: grid;
   grid-template-columns: 100px 100px 150px;
-  grid-template-rows: 100px 100px 550px;
+  grid-template-rows: 100px 100px 800px;
   margin: auto;
   width: 350px;
-  height: 750px;
+  height: 1000px;
   /* background-color:rgb(168, 168, 255); */
 }
 
@@ -115,4 +115,9 @@ code {
   text-align: start;
   padding: 12px;
   font-size: 14px;
+}
+
+#click-box {
+  grid-row: 3;
+  grid-column: 2 / span 2;
 }

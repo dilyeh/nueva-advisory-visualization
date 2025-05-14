@@ -16,6 +16,10 @@ export class Vector2 { // represents a 2d vector.
     angle() {
         return Math.atan2(this.Y, this.X);
     }
+
+    copy() {
+        return new Vector2(this.X, this.Y);
+    }
 }
 
 export function randInt(max) {
@@ -23,7 +27,7 @@ export function randInt(max) {
 }
 
 
-export function extractColors(url) { // input is a coolors url
+export function extractColors(url, reverse=false) { // input is a coolors url
     // get just the parts with the colors
     let colorCode = url.replace("https://coolors.co/palette/", '');
     // extract colors (hyphen-separated)
@@ -36,5 +40,12 @@ export function extractColors(url) { // input is a coolors url
             colorPalette[colorPalette.length - 1] = colorPalette[colorPalette.length - 1] + colorCode[char]
         }
     }
+    if (reverse) {
+        colorPalette.reverse();
+    }
     return (colorPalette);
+}
+
+export function cloneWithPrototype(obj) { // this was chatgpted
+    return Object.assign(Object.create(Object.getPrototypeOf(obj)), obj);
 }
