@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import './App.css';
-import { Visualization, VisualizationState, Vector2, VisualizationLabels, ColorKey, Descriptions } from './helpers.js';
+import { Visualization, VisualizationState, VisualizationLabels, ColorKey, Descriptions } from './helpers.js';
 import data from './clean_data.json'; // automatically parsed
 
 
@@ -46,7 +46,6 @@ function App() { // im not very familiar with what best practices exist for js/r
 }
 
 function Control({ tick, visStateRef }) { // ({ ... }) declare "props", which are just arguments into a react component
-  const [selectedOption, setSelectedOption] = useState('');
   const handleColorChange = (event) => {
     visStateRef.current.setNewState(event.target.value, visStateRef.current.targetPositionRule);
   };
@@ -57,7 +56,7 @@ function Control({ tick, visStateRef }) { // ({ ... }) declare "props", which ar
 
   return (
     <div id="menu">
-      <div class="control">
+      <div className="control">
         <div>Color</div>
         <select onChange={ handleColorChange }>
           <option value="None">None</option>
@@ -66,7 +65,7 @@ function Control({ tick, visStateRef }) { // ({ ... }) declare "props", which ar
           <option value="Frequency">Frequency</option>
         </select>
       </div>
-      <div class="control">
+      <div className="control">
         <div>Position</div>
         <select onChange={ handlePositionChange }>
           <option value="None">None</option>

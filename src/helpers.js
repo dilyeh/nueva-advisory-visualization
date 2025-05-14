@@ -6,7 +6,13 @@ export class VisualizationState {
         this.centerPosition = 250 / 2;
 
         //                    least                                        most
-        this.colorPalette = ["#22577a", "#38a3a5", "#57cc99", "#80ed99", "#c7f9cc"];
+        //this.colorPalette = VisualizationState.extractColorsFromCoolorsURL("https://coolors.co/palette/22577a-38a3a5-57cc99-80ed99-c7f9cc"); // cool, minty, kinda like a foggy forest at dusk
+        //this.colorPalette = VisualizationState.extractColorsFromCoolorsURL("https://coolors.co/palette/264653-2a9d8f-e9c46a-f4a261-e76f51"); // warm rainbow (like sunset in an evergreen forest during the cretaceous period or smth)
+        //this.colorPalette = VisualizationState.extractColorsFromCoolorsURL("https://coolors.co/palette/ffbe0b-fb5607-ff006e-8338ec-3a86ff"); // oversaturated sunset at the beach
+        //this.colorPalette = VisualizationState.extractColorsFromCoolorsURL("https://coolors.co/palette/ef476f-ffd166-06d6a0-118ab2-073b4c"); // oversaturated rainbow
+        //this.colorPalette = VisualizationState.extractColorsFromCoolorsURL("https://coolors.co/palette/386641-6a994e-a7c957-f2e8cf-bc4749"); // the hungry hungry caterpillar (i just think this one's funny)
+        this.colorPalette = VisualizationState.extractColorsFromCoolorsURL("https://coolors.co/palette/3d348b-7678ed-f7b801-f18701-f35b04"); // literally a sunset over the ocean
+        this.defaultColor = "#bababa";
         this.possibleTargetPositions = [50, 150, 250, 350, 450];
         this.orderMap = {
             "Frequency": ["3+ times a week", "Twice a week", "Once a week", "Once every other week", "Once a month"],
@@ -42,6 +48,22 @@ export class VisualizationState {
             this.dotList[idx].updateTargetPosition(this);
         }
     }
+
+    static extractColorsFromCoolorsURL(url) {
+        // get just the parts with the colors
+        let colorCode = url.replace("https://coolors.co/palette/", '');
+        // extract colors (hyphen-separated)
+        let colorPalette = ["#"];
+        for (let char=0; char<colorCode.length; char++) {
+            if (colorCode[char] === "-") {
+                colorPalette.push("#");
+            }
+            else {
+                colorPalette[colorPalette.length - 1] = colorPalette[colorPalette.length - 1] + colorCode[char]
+            }
+        }
+        return (colorPalette);
+    }
 }
 
 export function Visualization({ visStateRef }) { // this generates a react component
@@ -53,14 +75,14 @@ export function Visualization({ visStateRef }) { // this generates a react compo
                 r={ dotList[idx].radius }
                 cx={ dotList[idx].position.X }
                 cy={ dotList[idx].position.Y }
-                fill= { visStateRef.current.colorPalette[dotList[idx].colorIdx] }
+                fill= { (visStateRef.current.colorRule === "None") ? visStateRef.current.defaultColor : visStateRef.current.colorPalette[dotList[idx].colorIdx] }
              />
         );
     }
 
     let targetPositionRule = visStateRef.current.targetPositionRule;
     let lines = [];
-    if (targetPositionRule != "None") {
+    if (targetPositionRule !== "None") {
         let possibleTargetPositions = visStateRef.current.possibleTargetPositions;
         let orderMap = visStateRef.current.orderMap[targetPositionRule];
         for (let idx=0; idx<orderMap.length; idx++) {
@@ -71,7 +93,7 @@ export function Visualization({ visStateRef }) { // this generates a react compo
                     x2="500"
                     y2={ possibleTargetPositions[idx] } 
                     stroke="#e0e0e0"
-                    stroke-width="2"
+                    strokeWidth="2"
                 />
             )
         }
@@ -106,7 +128,7 @@ export class Dot {
     updateColor(visStateRef) {
         // find the idx of the state in the color map
         let colorRule = visStateRef.colorRule;
-        if (visStateRef.colorRule == "None") {
+        if (visStateRef.colorRule === "None") {
             this.colorIdx = 0;
             return
         }
@@ -146,8 +168,7 @@ export class Dot {
     }
   
     getForces(dotList) { // dotList is, contrary to popular belief, a list of dots
-        const attraction = 0.02;
-        const dampening = 0.8;
+        const attraction = 0.03;
         const selfForceField = 1.1;
         const othersForceField = 2;
         const otherDotSpringForce = -0.3;
@@ -208,7 +229,6 @@ export class Dot {
 
 
     getOutOfCollisions(dotList) { 
-        let previousPositionMoved = this.position;
         for (const dot of dotList) {
             let distance = dot.position.getDistance(this.position);
             if (this !== dot) {
@@ -300,6 +320,8 @@ export function VisualizationLabels({ visStateRef }) {
         case "Frequency":
             labels = ["3+ times a week", "2 times a week", "Once a week", "Once every other week", "Once a month"];
             break;
+        default:
+            break;
     }
     let htmlToReturn = [];
     for (const label of labels) {
@@ -318,7 +340,7 @@ export function VisualizationLabels({ visStateRef }) {
 export function ColorKey({ visStateRef }) {
     let colorRule = visStateRef.current.colorRule;
     if (colorRule == "None") { // none case
-        return (<div id="color-key"></div>)
+        return (<div id="color-key">No color selected</div>)
     }
 
     let orderMap = visStateRef.current.orderMap[colorRule];

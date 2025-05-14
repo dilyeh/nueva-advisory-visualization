@@ -85,16 +85,16 @@ code {
   grid-column: 3;
   display: flex;
   flex-flow: column;
+  font-size: 8pt;
+  justify-content: end;
 }
 
 .color-key-item {
   display: flex;
   flex-flow: row-reverse;
-  align-items: center;
-  justify-content: end;
   text-align: end;
+  align-items: center;
   width: 150px;
-  font-size: 8pt;
 }
 
 .color-key-dot {
