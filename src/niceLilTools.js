@@ -49,3 +49,7 @@ export function extractColors(url, reverse=false) { // input is a coolors url
 export function cloneWithPrototype(obj) { // this was chatgpted
     return Object.assign(Object.create(Object.getPrototypeOf(obj)), obj);
 }
+
+// this is from https://stackoverflow.com/questions/29544371/finding-the-average-of-an-array-using-js#41452260
+// because idk what the reduce method is
+export const average = (array) => array.reduce((a, b) => a + b) / array.length;

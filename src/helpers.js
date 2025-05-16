@@ -1,5 +1,5 @@
 import { Dot } from "./dot.js";
-import { Vector2, randInt, extractColors } from "./niceLilTools.js";
+import { Vector2, randInt, extractColors, average } from "./niceLilTools.js";
 import React, { useRef } from 'react';
 // i know it's bad to have a "helpers.js" file, but this is where all the components are stored, and i'm too lazy to rename it (but not too lazy to write this comment lol)
 
@@ -229,11 +229,30 @@ export function VisualizationLabels({ visStateRef }) {
         default:
             break;
     }
+
+    let meanLabels = numericalLabels(visStateRef);
+
     let htmlToReturn = [];
-    for (const label of labels) {
-        htmlToReturn.push(
-            <div class="label">{ label }</div>
-        );
+    if (meanLabels) { // this if else statement is a bit tacky, but oh well
+        for (let idx=0; idx<labels.length; idx++) {
+            htmlToReturn.push(
+                <div className="label">
+                    <div>{ labels[idx] }</div>
+                    { meanLabels[idx] }
+                </div>
+            );
+        }
+    }
+    else {
+        for (let idx=0; idx<labels.length; idx++) {
+            htmlToReturn.push(
+                <div className="label">
+                    <div>{ labels[idx] }</div>
+                    <div className="numerical-label"></div>
+                </div>
+            );
+        }
+
     }
 
     return(
@@ -246,7 +265,10 @@ export function VisualizationLabels({ visStateRef }) {
 export function ColorKey({ visStateRef }) {
     let colorRule = visStateRef.current.colorRule;
     if (colorRule == "None") { // none case
-        return (<div id="color-key">No color selected</div>)
+        return (
+            <div id="color-key">
+                <div>No color selected</div>
+            </div>)
     }
 
     let orderMap = visStateRef.current.orderMap[colorRule];
@@ -254,8 +276,8 @@ export function ColorKey({ visStateRef }) {
     let htmlToReturn = [];
     for (let idx=0; idx<orderMap.length; idx++) {
         htmlToReturn.push(
-            <div class="color-key-item">
-                <svg class="color-key-dot">
+            <div className="color-key-item">
+                <svg className="color-key-dot">
                     <circle cx="5" cy="5" r="5" fill={ colorPalette[idx] }/>
                 </svg>
                 <div>{ orderMap[idx] }</div>
@@ -278,10 +300,10 @@ export function Descriptions({ visStateRef }){
     
     return (
         <div id="description-container">
-            <div class="description">
+            <div className="description">
                 <strong>Color: </strong> { colorDescription }
             </div>
-            <div class="description">
+            <div className="description">
                 <strong>Position: </strong> {targetPositionDescription}
             </div>
         </div>
@@ -303,8 +325,12 @@ function getDescription(state) { // this is where all the descriptions are store
                 "How often students we surveyed wished advisory met."
             );
         case "None":
-            return(
+            return (
                 "None"
+            );
+        case "Activities":
+            return (
+                "Activities students reported doing in advisory in the past month."
             );
         default:
             return ("");
@@ -328,3 +354,95 @@ export function ClickBox({ visStateRef }) {
         ></div>)
 }
 
+function numericalLabels(visStateRef) {
+    let colorRule = visStateRef.current.colorRule;
+    let positionRule = visStateRef.current.targetPositionRule;
+    if (colorRule === "None" || positionRule === "None") { // none case
+        return;
+    }
+
+    let possibleTargetPositions = visStateRef.current.possibleTargetPositions;
+    let orderMap = visStateRef.current.orderMap;
+    // initialize dotsByPos
+    let dotsByPos = []; // [[dotAtPos1, dotAtPos1...], [dotAtPos2, dotAtPos2...]...]
+    for (let idx=0; idx<orderMap[positionRule].length; idx++) { 
+        dotsByPos.push([]);
+    }
+
+    // sort dots by target position
+    for (const dot of visStateRef.current.dotList) {
+        // get the data according to positionRule
+        let positionData;
+        if (positionRule === "Activities") {
+            positionData = dot.data["Activities"][dot.data["ActivityNum"]] // TODO: test this
+        }
+        else {
+            positionData = dot.data[positionRule];
+        }
+        // find the idx of the dot's data for the rule (this gives us the idx in possibleTargetPositions, so it should accomplish what we want while being a little more robust if we ever wanna change how targetPosition works)
+        let targetPosIdx;
+        for (let idx=0; idx<orderMap[positionRule].length; idx++) {
+            if (orderMap[positionRule][idx] === positionData) {
+                targetPosIdx = idx;
+                break;
+            }
+        }
+        // put that dot into the dotsByPos array
+        if (targetPosIdx != undefined) {
+            dotsByPos[targetPosIdx].push(dot);
+        }
+    }
+
+    // initializie valuesByPos
+    let valuesByPos = [] // [[value1, value2...], [value1, value2...]...]
+    for (let idx=0; idx<dotsByPos.length; idx++) {
+        valuesByPos.push([]);
+    }
+    // get the dots' values based on their colors
+    for (let pos=0; pos<dotsByPos.length; pos++) {
+        // for each dot in dotsByPos[pos]
+        for (const dot of dotsByPos[pos]) {
+            // add the value according to colorRule to valuesByPos
+            let value;
+            switch (colorRule) {
+                case "Grade":
+                    value = Number(dot.data["Grade"]);
+                    break;
+                case "Value":
+                    value = Number(dot.data["Value"]);
+                    break;
+                case "Frequency":
+                    //"Frequency": ["3+ times a week", "Twice a week", "Once a week", "Once every other week", "Once a month"] // TODO: this is VERY bad, but idk i'm not gonna be working on this code in a few days
+                    const map = {"3+ times a week": 12, "Twice a week": 8, "Once a week": 4, "Once every other week": 2, "Once a month": 1};
+                    value = map[dot.data["Frequency"]]
+                default:
+                    break;
+            }
+            if (value) {
+                valuesByPos[pos].push(value);
+            }
+        }
+    }
+
+    // average the dots' values by target position
+    let averagesByPos = [] // [average1, average2...]
+    for (let idx=0; idx<valuesByPos.length; idx++) {
+        averagesByPos.push(
+            Math.round(average(valuesByPos[idx]) * 100) / 100 // average and round too the nearest 0.01
+        );
+    }
+
+    // return a component with labels
+    let labels = [];
+    let units = "";
+    if (colorRule === "Frequency") {
+        units = " times/month";
+    }
+    for (let idx=0; idx<averagesByPos.length; idx++) {
+        labels.push(
+            <div className="numerical-label">Mean {colorRule}: { averagesByPos[idx] }{ units }</div>
+        )
+    }
+
+    return (labels);
+}

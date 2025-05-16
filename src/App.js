@@ -38,8 +38,8 @@ function App() { // im not very familiar with what best practices exist for js/r
             <ColorKey visStateRef={visStateRef} />
             <Descriptions visStateRef={visStateRef} />
             <VisualizationLabels visStateRef={visStateRef} />
-            <Visualization visStateRef={visStateRef}/>
-            <ClickBox visStateRef={visStateRef}/>
+            <Visualization visStateRef={visStateRef} />
+            <ClickBox visStateRef={visStateRef} />
           </div>
       </div>
     </div>

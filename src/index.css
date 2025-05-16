@@ -18,6 +18,7 @@ code {
 #content {
   display: flex;
   justify-content: center;
+  font-size: 14px;
 }
 
 #title {
@@ -48,18 +49,24 @@ code {
   grid-row: 3 / span 2;
   display: flex;
   flex-direction: column;
+  font-size: 14px;
   /* background-color:rgb(254, 223, 138); */
 }
 
 .label {
   height: 50px;
   padding: 10px;
-  margin-bottom: 10px;
-  margin-top: 18px; /* this is very cursed, but it's the easiest way i can think of doing it */
+  margin-bottom: 16px;
+  margin-top: 14px; /* this is very cursed, but it's the easiest way i can think of doing it */
   display: flex;
-  align-items: center;
-  justify-content: end;
+  flex-flow: column;
+  align-items: end;
+  justify-content: center;
   text-align: right;
+}
+
+.numerical-label {
+  font-size: 8px;
 }
 
 #menu {
