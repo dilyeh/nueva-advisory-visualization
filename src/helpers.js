@@ -174,12 +174,16 @@ export function Visualization({ visStateRef }) { // this generates a react compo
 // ====================
 // == CONTROL SYSTEM ==
 // ====================
-export function Control({ visStateRef }) { // ({ ... }) declare "props", which are just arguments into a react component
+export function Control({ visStateRef, forceUpdate }) { // ({ ... }) declare "props", which are just arguments into a react component
   const handleColorChange = (event) => {
     visStateRef.current.setNewState(event.target.value, visStateRef.current.targetPositionRule);
+    // update entire vis
+    forceUpdate(prev => prev + 1);
   };
   const handlePositionChange = (event) => { // it's a bit cursed to be handling this here, but that's just kinda what we're doing because i can't think of a better option off the top of my head
     visStateRef.current.setNewState(visStateRef.current.colorRule, event.target.value);
+    // update entire vis
+    forceUpdate(prev => prev + 1);
   };
 
   return (
@@ -431,6 +435,7 @@ function numericalLabels(visStateRef) {
             Math.round(average(valuesByPos[idx]) * 100) / 100 // average and round too the nearest 0.01
         );
     }
+    console.log(averagesByPos);
 
     // return a component with labels
     let labels = [];
