@@ -361,7 +361,7 @@ export function ClickBox({ visStateRef }) {
 function numericalLabels(visStateRef) {
     let colorRule = visStateRef.current.colorRule;
     let positionRule = visStateRef.current.targetPositionRule;
-    if (colorRule === "None" || positionRule === "None") { // none case
+    if (positionRule === "None") { // none case
         return;
     }
 
@@ -395,6 +395,19 @@ function numericalLabels(visStateRef) {
         if (targetPosIdx != undefined) {
             dotsByPos[targetPosIdx].push(dot);
         }
+    }
+
+    // if there's no color, but there is position, just return the dot number
+    if (colorRule === "None") {
+        let labels = [];
+        for (let idx=0; idx<dotsByPos.length; idx++) {
+            labels.push(
+                <div className="numerical-label">
+                    <div>{dotsByPos[idx].length} students</div>
+                </div>
+            )
+        }
+        return (labels);
     }
 
     // initializie valuesByPos
@@ -445,7 +458,10 @@ function numericalLabels(visStateRef) {
     }
     for (let idx=0; idx<averagesByPos.length; idx++) {
         labels.push(
-            <div className="numerical-label">Mean {colorRule}: { averagesByPos[idx] }{ units }</div>
+            <div className="numerical-label">
+                <div>{dotsByPos[idx].length} students</div>
+                <div>Mean {colorRule}: { averagesByPos[idx] }{ units }</div>
+            </div>
         )
     }
 
