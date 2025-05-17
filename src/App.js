@@ -13,15 +13,15 @@ function App() { // im not very familiar with what best practices exist for js/r
     setUpdate(value)
   }
   
-  return ( // VisualizationRerenderer rerenders everything in the the dot visualization. Control
+  return ( // VisualizationRerenderer rerenders everything in the the dot visualization. Control is responsible for triggering rerenders
     <div id="content">
       <div className="App">
         <h1 id="title">Student Opinion on Advisory</h1>
         <div id="visualization-container">
           <Control visStateRef={visStateRef} forceUpdate={forceUpdate}/>
-          <ColorKey visStateRef={visStateRef} update={update}/>
-          <Descriptions visStateRef={visStateRef} update={update}/>
-          <VisualizationLabels visStateRef={visStateRef} update={update}/>
+          <ColorKey visStateRef={visStateRef} />
+          <Descriptions visStateRef={visStateRef} />
+          <VisualizationLabels visStateRef={visStateRef} />
           <VisualizationRerenderer visStateRef={visStateRef} />
           <ClickBox visStateRef={visStateRef} />
         </div>
