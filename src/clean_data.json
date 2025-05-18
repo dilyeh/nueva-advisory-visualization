@@ -1120,5 +1120,74 @@
             "work periods"
         ],
         "Frequency": "Once a week"
+    },
+    {
+        "Grade": "10",
+        "Advisory": "Jen N. & Kevin",
+        "Value": "2",
+        "Activities": [
+            "advisory discussions",
+            "announcements",
+            "work periods"
+        ],
+        "Frequency": "Once a month"
+    },
+    {
+        "Grade": "10",
+        "Advisory": "Lindy & Shawn",
+        "Value": "2",
+        "Activities": [
+            "advisory discussions",
+            "announcements",
+            "games"
+        ],
+        "Frequency": "Once every other week"
+    },
+    {
+        "Grade": "10",
+        "Advisory": "Braelyn & Karin",
+        "Value": "3",
+        "Activities": [
+            "one on ones",
+            "announcements",
+            "work periods"
+        ],
+        "Frequency": "Once a week"
+    },
+    {
+        "Grade": "10",
+        "Advisory": "Katie G. & Brett",
+        "Value": "4",
+        "Activities": [
+            "one on ones",
+            "advisory discussions",
+            "announcements",
+            "games"
+        ],
+        "Frequency": "Twice a week"
+    },
+    {
+        "Grade": "10",
+        "Advisory": "Barak & Regina",
+        "Value": "2",
+        "Activities": [
+            "one on ones",
+            "games",
+            "work periods"
+        ],
+        "Frequency": "Once a week"
+    },
+    {
+        "Grade": "10",
+        "Advisory": "Jen N. & Kevin",
+        "Value": "4",
+        "Activities": [
+            "one on ones",
+            "advisory discussions",
+            "announcements",
+            "work periods",
+            "cross-advisory activities"
+        ],
+        "Frequency": "Twice a week"
     }
 ]

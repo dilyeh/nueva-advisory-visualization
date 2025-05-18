@@ -1,6 +1,6 @@
 import { Dot } from "./dot.js";
 import { Vector2, randInt, extractColors, average } from "./niceLilTools.js";
-import React, { useRef } from 'react';
+import React, { useState, useRef } from 'react';
 // i know it's bad to have a "helpers.js" file, but this is where all the components are stored, and i'm too lazy to rename it (but not too lazy to write this comment lol)
 
 // ==============================
@@ -13,7 +13,6 @@ export class VisualizationState {
         this.targetPositionRule = "None";
         this.centerPosition = new Vector2(250/2, 550/2);
 
-        //                    least                                        most
         //let.url = "https://coolors.co/palette/22577a-38a3a5-57cc99-80ed99-c7f9cc"; // cool, minty, kinda like a foggy forest at dusk
         //let.url = "https://coolors.co/palette/264653-2a9d8f-e9c46a-f4a261-e76f51"; // warm rainbow (like sunset in an evergreen forest during the cretaceous period or smth)
         //let url = "https://coolors.co/palette/ffbe0b-fb5607-ff006e-8338ec-3a86ff"; // oversaturated sunset at the beach
@@ -466,4 +465,94 @@ function numericalLabels(visStateRef) {
     }
 
     return (labels);
+}
+
+export function Info({ active, deactivate }) { // active is a bool
+
+    if (active) {
+        return (
+            <div class="shadow">
+                <div id="info-container">
+                    <button id="deactivate-info-button" onClick={deactivate}>X</button>
+                    <div id="info">
+                        <h2>Biases and Limitations</h2>
+                        <p>
+                            <strong>Grade: </strong>
+                            Most responses to our form came from underclassmen (To see this most clearly, 
+                            go to the Position menu and select "Grade"&#41;). Because of this, the data may be skewed towards
+                            the opinions of underclassmen.
+                        </p>
+                        <p>
+                            <strong>Value: </strong>
+                            Value was measured with a Likert scale (scale from 1 to 5) where 1 was "Useless" and 5 was "Very Valuable".
+                        </p>
+                        <p>
+                            <strong>Frequency: </strong>
+                            Frequency was an optional question, so a few respondents didn't fill it out. The labels showing student-count 
+                            and mean account for this, ignoring those students when calculating those values. However, the dots representing
+                            students who didn't report a preferred frequency default to going towards the "Twice a week" clump, so the 
+                            student-count may not exactly match up with the number of dots in a clump. Additionally, when calculating mean 
+                            preferred frequency, "Once a month" was counted as 1 meetings per month, "Once every other week" was counted as 2 
+                            meetings per month, "Once a week" was counted as 4 meetings per month, "Twice a week" was counted as 8 meetings per 
+                            month, and "3+ times a month" was counted as 12 meetings per month.
+                        </p>
+                        <p>
+                            <strong>Activities: </strong>
+                            Activites shows the activities that students reported doing in advisory in the past month before filling out our
+                            form. Because of this, respondents could report more than one option, which is why the dots duplicate when the
+                            "Activities" option is selected. Additionally, some students selected an "other" option, but these responses are
+                            not represented in this visualization.
+                        </p>
+                        <h3>Activity Descriptions</h3>
+                        <table>
+                            <tr>
+                                <th>Activity</th>
+                                <th>Description</th>
+                            </tr>
+                            <tr>
+                                <td>One on ones</td>
+                                <td>One-on-one check-ins with advisors</td>
+                            </tr>
+                            <tr>
+                                <td>Advisory discussions</td>
+                                <td>Whole-advisory discussions</td>
+                            </tr>
+                            <tr>
+                                <td>Announcements</td>
+                                <td>Announcements from advisors. This includes things like trips meetings and explaining the course catalog</td>
+                            </tr>
+                            <tr>
+                                <td>Games</td>
+                                <td>Games played in advisory (such as card games, scatagories, semantle, etc.)</td>
+                            </tr>
+                            <tr>
+                                <td>Work periods</td>
+                                <td>Free time and work periods</td>
+                            </tr>
+                            <tr>
+                                <td>Cross-advisory activities</td>
+                                <td>Activities with more than one advisory</td>
+                            </tr>
+                            <tr>
+                                <td>Off-campus trips</td>
+                                <td>Off-campus trips (to places such as Bay Meadows Park, Hillsdale Mall, Blue Bottle, etc.)</td>
+                            </tr>
+                            <tr>
+                                <td>None</td>
+                                <td>None of the above</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    return;
+}
+
+export function InfoButton({ activate }) {
+    return (
+        <button id="info-button" onClick={activate}>Info</button>
+    )
 }

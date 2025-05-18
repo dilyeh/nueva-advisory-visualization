@@ -29,7 +29,7 @@ code {
 #visualization-container {
   display: grid;
   grid-template-columns: 100px 100px 150px;
-  grid-template-rows: 100px 100px 800px;
+  grid-template-rows: 25px 75px 100px 800px;
   margin: auto;
   width: 350px;
   height: 1000px;
@@ -38,7 +38,7 @@ code {
 
 #visualization {
   grid-column: 2 / span 2;
-  grid-row: 3;
+  grid-row: 4;
   width: 100%;
   height: 100%;
   /* background-color:rgb(134, 225, 255); */
@@ -46,7 +46,7 @@ code {
 
 #visualization-label-container {
   grid-column: 1;
-  grid-row: 3 / span 2;
+  grid-row: 4 / span 2; /* wait wtf is going on with the span ?? */
   display: flex;
   flex-direction: column;
   font-size: 14px;
@@ -71,7 +71,7 @@ code {
 
 #menu {
   grid-column: 1 / span 2;
-  grid-row: 1;
+  grid-row: 2;
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr;
@@ -82,14 +82,22 @@ code {
   margin: auto;
 }
 
-.control select {
+select {
   border: 2px solid #ddd;
+  border-radius: 5px;
   background: #eee;
   padding: 5px;
 }
 
+button {
+  border: 2px solid #ddd;
+  background: #eee;
+  border-radius: 5px;
+}
+
 #color-key {
   grid-column: 3;
+  grid-row: 1 / span 2;
   display: flex;
   flex-flow: column;
   font-size: 8pt;
@@ -111,7 +119,7 @@ code {
 }
 
 #description-container {
-  grid-row: 2;
+  grid-row: 3;
   grid-column: 1 / span 3;
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -125,6 +133,51 @@ code {
 }
 
 #click-box {
-  grid-row: 3;
+  grid-row: 4;
   grid-column: 2 / span 2;
+}
+
+.shadow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#info-container {
+  background-color: #ffffff;
+  max-width: 500px;
+  height: 80%;
+  border-radius: 15px;
+  padding: 15px;
+  display: flex;
+  flex-flow: column;
+  justify-content: left;
+}
+
+#info {
+  font-size: 14px;
+  text-align: start;
+  height: 90%;
+  overflow-y: scroll;
+  padding: 10px;
+}
+
+#info table {
+  border: 1px solid #e0e0e0;
+}
+
+#deactivate-info-button {
+  width: 25px;
+  height: 25px;
+}
+
+#info-button {
+  grid-row: 1;
+  grid-column: 1;
 }

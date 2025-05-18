@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import './App.css';
-import { Visualization, VisualizationState, VisualizationLabels, ColorKey, Descriptions, Control, ClickBox } from './helpers.js';
+import { Visualization, VisualizationState, VisualizationLabels, ColorKey, Descriptions, Control, ClickBox, Info, InfoButton } from './helpers.js';
 import data from './clean_data.json'; // automatically parsed
 
 
@@ -8,9 +8,16 @@ function App() { // im not very familiar with what best practices exist for js/r
   // stuff to rerender stuff
   const visStateRef = useRef(new VisualizationState(data));
   const [update, setUpdate] = useState(0);
+  const [infoActive, setInfoActive] = useState(true);
 
   const forceUpdate = (value) => {
-    setUpdate(value)
+    setUpdate(value);
+  }
+  const deactivateInfo = () => {
+    setInfoActive(false);
+  }
+  const activateInfo = () => {
+    setInfoActive(true);
   }
   
   return ( // VisualizationRerenderer rerenders everything in the the dot visualization. Control is responsible for triggering rerenders
@@ -24,6 +31,8 @@ function App() { // im not very familiar with what best practices exist for js/r
           <VisualizationLabels visStateRef={visStateRef} />
           <VisualizationRerenderer visStateRef={visStateRef} />
           <ClickBox visStateRef={visStateRef} />
+          <Info active={infoActive} deactivate={deactivateInfo} />
+          <InfoButton activate={activateInfo}></InfoButton>
         </div>
       </div>
     </div>
