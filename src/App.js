@@ -49,7 +49,7 @@ function VisualizationRerenderer ({ visStateRef }) {
       setTick(prev => {
         return prev + 1;
       }); // what is this sorcery???
-    }, 10);
+    }, 20);
 
     return () => clearInterval(interval); // Clean up on unmount
   }, []);

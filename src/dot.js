@@ -71,10 +71,10 @@ export class Dot {
     }
   
     getForces(dotList) { // dotList is, contrary to popular belief, a list of dots
-        const attraction = 0.03;
+        const attraction = 0.06;
         const selfForceField = 1.1;
         const othersForceField = 2;
-        const otherDotSpringForce = -0.3;
+        const otherDotSpringForce = -0.6;
 
         // find forces according to targetPosition
         let distanceFromTargetPosition = new Vector2(this.targetPosition.X - this.position.X, this.targetPosition.Y - this.position.Y);
@@ -111,7 +111,7 @@ export class Dot {
 
     updateVelocity() {
         const dampening = 0.8;
-        const maxAcceleration = 0.5;
+        const maxAcceleration = 0.65;
 
         if (this.forces.magnitude() > maxAcceleration) {
             this.forces.X = Math.cos(this.forces.angle()) * maxAcceleration;
