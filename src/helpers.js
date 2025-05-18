@@ -353,7 +353,7 @@ export function ClickBox({ visStateRef }) {
         <div 
             id="click-box"
             ref={boxRef} 
-            onMouseDown={ handleClick }
+            onClick={ handleClick }
         ></div>)
 }
 
@@ -475,11 +475,17 @@ export function Info({ active, deactivate }) { // active is a bool
                 <div id="info-container">
                     <button id="deactivate-info-button" onClick={deactivate}>X</button>
                     <div id="info">
+                        <h2>How to Use this Visualization</h2>
+                        <p>
+                            Each dot in this visualization represents a student who filled out <a href="https://docs.google.com/forms/d/e/1FAIpQLSePUIkm_BPBJw4oWZU8IpMjAwOee7EDeX3oESQQVgO8HU2BDg/viewform?usp=dialog">this survey</a>
+                            . To start playing around with this visualization, try changing the Color and Value dropdown menus! 
+                            Also, if dots get stuck, try clicking on the dots a couple of times!
+                        </p>
                         <h2>Biases and Limitations</h2>
                         <p>
                             <strong>Grade: </strong>
                             Most responses to our form came from underclassmen (To see this most clearly, 
-                            go to the Position menu and select "Grade"&#41;). Because of this, the data may be skewed towards
+                            go to the Position menu and select "Grade"). Because of this, the data may be skewed towards
                             the opinions of underclassmen.
                         </p>
                         <p>

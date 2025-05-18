@@ -8,7 +8,7 @@ function App() { // im not very familiar with what best practices exist for js/r
   // stuff to rerender stuff
   const visStateRef = useRef(new VisualizationState(data));
   const [update, setUpdate] = useState(0);
-  const [infoActive, setInfoActive] = useState(true);
+  const [infoActive, setInfoActive] = useState(false);
 
   const forceUpdate = (value) => {
     setUpdate(value);
