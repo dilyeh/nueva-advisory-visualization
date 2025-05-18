@@ -478,8 +478,8 @@ export function Info({ active, deactivate }) { // active is a bool
                         <h2>How to Use this Visualization</h2>
                         <p>
                             Each dot in this visualization represents a student who filled out <a href="https://docs.google.com/forms/d/e/1FAIpQLSePUIkm_BPBJw4oWZU8IpMjAwOee7EDeX3oESQQVgO8HU2BDg/viewform?usp=dialog">this survey</a>
-                            . To start playing around with this visualization, try changing the Color and Value dropdown menus! 
-                            Also, if dots get stuck, try clicking on the dots a couple of times!
+                            . To start playing around with this, try changing the Color and Position dropdown menus! 
+                            Also, if dots look like they're getting stuck, try clicking on the them a couple of times!
                         </p>
                         <h2>Biases and Limitations</h2>
                         <p>
