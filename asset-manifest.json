@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/nueva-advisory-visualization/static/css/main.f1b660a3.css",
-    "main.js": "/nueva-advisory-visualization/static/js/main.1107db14.js",
+    "main.css": "/nueva-advisory-visualization/static/css/main.0d0f8eb8.css",
+    "main.js": "/nueva-advisory-visualization/static/js/main.9a96493d.js",
     "static/js/453.565bbd6b.chunk.js": "/nueva-advisory-visualization/static/js/453.565bbd6b.chunk.js",
     "index.html": "/nueva-advisory-visualization/index.html",
-    "main.f1b660a3.css.map": "/nueva-advisory-visualization/static/css/main.f1b660a3.css.map",
-    "main.1107db14.js.map": "/nueva-advisory-visualization/static/js/main.1107db14.js.map",
+    "main.0d0f8eb8.css.map": "/nueva-advisory-visualization/static/css/main.0d0f8eb8.css.map",
+    "main.9a96493d.js.map": "/nueva-advisory-visualization/static/js/main.9a96493d.js.map",
     "453.565bbd6b.chunk.js.map": "/nueva-advisory-visualization/static/js/453.565bbd6b.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.f1b660a3.css",
-    "static/js/main.1107db14.js"
+    "static/css/main.0d0f8eb8.css",
+    "static/js/main.9a96493d.js"
   ]
 }
