@@ -187,7 +187,7 @@ export class Dot {
     repelFrom(position) {
         let distance = this.position.getDistance(position);
         const range = 100;
-        const power = 0.15;
+        const power = 0.2;
         if (distance < range) {
             let angle = Math.atan2(position.Y - this.position.Y, position.X - this.position.X); // i copy+pasted this from the getforces code lol
             this.velocity.X -= Math.cos(angle) * (range - distance) * power;
