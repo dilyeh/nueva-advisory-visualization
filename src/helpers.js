@@ -45,6 +45,9 @@ export class VisualizationState {
     }
 
     updateVisualization() {
+        // sort dots by y axis
+        //                                least             greatest
+        this.dotList.sort((dot1, dot2) => dot1.position.Y - dot2.position.Y); // this was chatgpted, i don't really know how it works
         for (let idx=0; idx<this.dotList.length; idx++) {
             this.dotList[idx].updateTick(this.dotList);
             this.dotList[idx].moveTick(this.dotList);
