@@ -1,6 +1,6 @@
 import { Dot } from "./dot.js";
 import { Vector2, randInt, extractColors, average } from "./niceLilTools.js";
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 // i know it's bad to have a "helpers.js" file, but this is where all the components are stored, and i'm too lazy to rename it (but not too lazy to write this comment lol)
 
 // ==============================
@@ -45,11 +45,7 @@ export class VisualizationState {
     }
 
     updateVisualization() {
-        // sort dots by y axis
-        //                                least             greatest
-        this.dotList.sort((dot1, dot2) => dot1.position.Y - dot2.position.Y); // this was chatgpted, i don't really know how it works
         for (let idx=0; idx<this.dotList.length; idx++) {
-            let dotSubList = this.dotList.slice(idx - 20, idx + 20);
             this.dotList[idx].updateTick(this.dotList);
             this.dotList[idx].moveTick(this.dotList);
         }
@@ -368,7 +364,6 @@ function numericalLabels(visStateRef) {
         return;
     }
 
-    let possibleTargetPositions = visStateRef.current.possibleTargetPositions;
     let orderMap = visStateRef.current.orderMap;
     // initialize dotsByPos
     let dotsByPos = []; // [[dotAtPos1, dotAtPos1...], [dotAtPos2, dotAtPos2...]...]
@@ -435,6 +430,7 @@ function numericalLabels(visStateRef) {
                     //"Frequency": ["3+ times a week", "Twice a week", "Once a week", "Once every other week", "Once a month"] // TODO: this is VERY bad, but idk i'm not gonna be working on this code in a few days
                     const map = {"3+ times a week": 12, "Twice a week": 8, "Once a week": 4, "Once every other week": 2, "Once a month": 1};
                     value = map[dot.data["Frequency"]]
+                    break;
                 default:
                     break;
             }
