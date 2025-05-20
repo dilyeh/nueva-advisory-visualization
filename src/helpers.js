@@ -13,8 +13,8 @@ export class VisualizationState {
         this.targetPositionRule = "None";
         this.centerPosition = new Vector2(250/2, 550/2);
 
-        //let.url = "https://coolors.co/palette/22577a-38a3a5-57cc99-80ed99-c7f9cc"; // cool, minty, kinda like a foggy forest at dusk
-        //let.url = "https://coolors.co/palette/264653-2a9d8f-e9c46a-f4a261-e76f51"; // warm rainbow (like sunset in an evergreen forest during the cretaceous period or smth)
+        //let url = "https://coolors.co/palette/22577a-38a3a5-57cc99-80ed99-c7f9cc"; // cool, minty, kinda like a foggy forest at dusk
+        //let url = "https://coolors.co/palette/264653-2a9d8f-e9c46a-f4a261-e76f51"; // warm rainbow (like sunset in an evergreen forest during the cretaceous period or smth)
         //let url = "https://coolors.co/palette/ffbe0b-fb5607-ff006e-8338ec-3a86ff"; // oversaturated sunset at the beach
         //let url = "https://coolors.co/palette/ef476f-ffd166-06d6a0-118ab2-073b4c"; // oversaturated rainbow
         //let url = "https://coolors.co/palette/386641-6a994e-a7c957-f2e8cf-bc4749"; // the hungry hungry caterpillar (i just think this one's funny)
@@ -173,7 +173,7 @@ export function Visualization({ visStateRef }) { // this generates a react compo
 // ====================
 // == CONTROL SYSTEM ==
 // ====================
-export function Control({ visStateRef, forceUpdate }) { // ({ ... }) declare "props", which are just arguments into a react component
+export function Control({ visStateRef, forceUpdate, tutorialRun, runClickTutorial }) { // ({ ... }) declare "props", which are just arguments into a react component
   const handleColorChange = (event) => {
     visStateRef.current.setNewState(event.target.value, visStateRef.current.targetPositionRule);
     // update entire vis
@@ -181,6 +181,9 @@ export function Control({ visStateRef, forceUpdate }) { // ({ ... }) declare "pr
   };
   const handlePositionChange = (event) => { // it's a bit cursed to be handling this here, but that's just kinda what we're doing because i can't think of a better option off the top of my head
     visStateRef.current.setNewState(visStateRef.current.colorRule, event.target.value);
+    if (event.target.value === "Activities" && !tutorialRun) {
+        runClickTutorial(); // run the click tutorial
+    }
     // update entire vis
     forceUpdate(prev => prev + 1);
   };
@@ -340,7 +343,7 @@ function getDescription(state) { // this is where all the descriptions are store
     }
 }
 
-export function ClickBox({ visStateRef }) {
+export function ClickBox({ visStateRef, deactivateTutorial }) {
     const boxRef = useRef(null);
     const handleClick = (event) => {
         const rect = boxRef.current.getBoundingClientRect();
@@ -348,6 +351,7 @@ export function ClickBox({ visStateRef }) {
         const y = event.clientY - rect.top;
         console.log("X: " + x + "    Y: " + y);
         visStateRef.current.explodeDots(new Vector2(x, y));
+        deactivateTutorial(); // basically, if you click, don't run the tutorial. we love spaghetti code
     }
     return (
         <div 
@@ -561,4 +565,15 @@ export function InfoButton({ activate }) {
     return (
         <button id="info-button" onClick={activate}>Info</button>
     )
+}
+
+export function ClickTutorial({ active }) {
+    if (active) {
+        return (
+            <div id="click-tutorial">
+                Hey! If it looks like the dots are getting stuck, try clicking on them!
+            </div>
+        );
+    }
+    return;
 }

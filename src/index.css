@@ -186,3 +186,20 @@ button {
   grid-row: 1;
   grid-column: 1;
 }
+
+#click-tutorial {
+  position: fixed;
+  bottom: 5vh;
+  width: 350px;
+  padding: 10px;
+  background-color: aqua;
+  border: 2px solid #ddd;
+  background: #eee;
+  animation-name: click-tutorial-swipe-up;
+  animation-duration: 1s;
+}
+
+@keyframes click-tutorial-swipe-up {
+  from { bottom: -50vh; }
+  to { botom: 5vh; }
+}
